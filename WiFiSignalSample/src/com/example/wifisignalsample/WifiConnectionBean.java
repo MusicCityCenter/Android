@@ -3,9 +3,8 @@ package com.example.wifisignalsample;
 public class WifiConnectionBean{
 	private String name;
 	private String description;
-	private String id;
-	private String level;
-	private String SignalStrength;
+	private int SignalStrength;
+	private String BSSID;
 	public String getName() {
 		return name;
 	}
@@ -18,23 +17,18 @@ public class WifiConnectionBean{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getLevel() {
-		return level;
-	}
-	public void setLevel(String level) {
-		this.level = level;
-	}
-	public String getSignalStrength() {
+	public int getSignalStrength() {
 		return SignalStrength;
 	}
-	public void setSignalStrength(String signalStrength) {
+	public void setSignalStrength(int signalStrength) {
 		SignalStrength = signalStrength;
 	}
+	public String getBSSID() {
+		return BSSID;
+	}
+	public void setBSSID(String bSSID) {
+		BSSID = bSSID;
+	}
+	
 	
 }
