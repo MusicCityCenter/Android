@@ -4,5 +4,7 @@
     <string name="app_name">MCC map</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="location_prompt">Where would you like to go?</string>
+    <string name="floor_diagram">A diagram of the MCCs floors</string>
 
 </resources>
