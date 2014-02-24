@@ -92,6 +92,7 @@ public class MainActivity extends Activity {
 				StrengthDataset.clear();
 				sampleSequence.clear();
 				temp.clear();
+				count = 0;
 			}
 		});
 		mainWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);

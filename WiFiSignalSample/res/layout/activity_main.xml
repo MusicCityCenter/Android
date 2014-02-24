@@ -25,6 +25,7 @@
 
         <Button
             android:id="@+id/button_sample"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -33,7 +34,8 @@
 
         <Button
             android:id="@+id/button_save"
-            android:layout_width="83dp"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/button_sample"
@@ -41,6 +43,7 @@
 
         <Button
             android:id="@+id/button_where"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -48,11 +51,14 @@
             android:text="Where am I" />
 		<Button
             android:id="@+id/button_reset"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/button_where"
             android:text="Reset" />
+
+		
     </RelativeLayout>
     
     <ListView
