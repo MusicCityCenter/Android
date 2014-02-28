@@ -1,0 +1,5 @@
+/
+  @author weichen
+/
+
+jsonevent is an example for EvntViewActivity, right now I can not run the whole project because I do not have the connection to googlemap as Nolan show last week. There is a screenshot.jpg at this file and it shows the basic UI of this event function. 

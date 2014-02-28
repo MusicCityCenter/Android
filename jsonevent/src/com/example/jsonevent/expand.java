@@ -1,10 +1,4 @@
-/* 
-**
-** Copyright 2014, Jules White
-**
-** 
-*/
-package org.magnum.mcc.events;
+package com.example.jsonevent;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -20,43 +14,23 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.magnum.mcc.nav.MapRouteActivity;
 
-
-import android.R;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-// Work Item 3
-/**
- * This activity should show basic event information and
- * have a button that allows the user to launch the MapRouteActivity
- * to see directions on how to get to the event.
- * 
- * @author jules
- * @author weichen 
- * @version 1.0
- *
- */
-public class EventViewActivity extends Activity {
+public class expand extends Activity {
 
-	private EventController eventController_;
-	
-	//list to store JSON information
 	List<String> eventname = new ArrayList<String>();
 	List<List<String>> moreinfo = new ArrayList<List<String>>();
-	
-	//a http connection to link webpage where JSON is stored
+
 	private String getContent(String url) throws Exception {
 		StringBuilder sb = new StringBuilder();
 
@@ -79,9 +53,7 @@ public class EventViewActivity extends Activity {
 		}
 		return sb.toString();
 	}
-	
-	
-	//to initialize two list above
+
 	private void initializeData(String url) {
 		try {
 			String body = getContent(url);
@@ -106,46 +78,34 @@ public class EventViewActivity extends Activity {
 		} catch (Exception e) {
 		}
 	}
+
 	
 	//change time to normal format
 	public String time(String t)
-		{
-			 int i = Integer.parseInt(t);
-			 int hour=i/60;
-			 int min=i-60*hour;
-			 String h=String.valueOf(hour);
-			 String m=String.valueOf(min);
-			 if(min==0)  m="00";
-			 if(min<10&&min>0)  m="0"+m;
-			 String time=h+":"+m;
-			 return time;
-			 
-		}
+	{
+		 int i = Integer.parseInt(t);
+		 int hour=i/60;
+		 int min=i-60*hour;
+		 String h=String.valueOf(hour);
+		 String m=String.valueOf(min);
+		 if(min==0)  m="00";
+		 if(min<10&&min>0)  m="0"+m;
+		 String time=h+":"+m;
+		 return time;
+		 
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		// Do stuff to setup the UI
-		setContentView(R.layout.eventviewactivity);
-		
-		// Obtain the request path data
-		Intent i = getIntent();
-		final String floorplanId = i.getStringExtra("floorplanId");
-		final String eventId = i.getStringExtra("eventId");
-		final String endId = i.getStringExtra("endId");
+		setContentView(R.layout.expand);
 
-		// This should probably be pulled from shared preferences
-		// but can be hardcoded to the MCC appengine server for now
 		String server = "http://0-1-dot-mcc-backend.appspot.com";
-		int port = 80;
 		String baseUrl = "/mcc/events/full-test-1/on/5/9/2014";
 		String url = server + baseUrl;
-		//just hardcoded right now, to be modified when server is done
-	
+
 		initializeData(url);
-		
-		//a expandableListView to implement click-expand function, and show all event information
+
 		ExpandableListAdapter adapter = new BaseExpandableListAdapter() {
 
 			@Override
@@ -180,7 +140,7 @@ public class EventViewActivity extends Activity {
 				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
 						ViewGroup.LayoutParams.FILL_PARENT, 80);
 
-				TextView text = new TextView(EventViewActivity.this);
+				TextView text = new TextView(expand.this);
 				text.setLayoutParams(lp);
 				// Center the text vertically
 				text.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
@@ -223,7 +183,7 @@ public class EventViewActivity extends Activity {
 				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
 						ViewGroup.LayoutParams.FILL_PARENT, 80);
 
-				TextView text = new TextView(EventViewActivity.this);
+				TextView text = new TextView(expand.this);
 				text.setLayoutParams(lp);
 				// Center the text vertically
 				text.setGravity(Gravity.CENTER | Gravity.CENTER);
@@ -250,19 +210,5 @@ public class EventViewActivity extends Activity {
 		};
 		ExpandableListView expandListView = (ExpandableListView) findViewById(R.id.expandableListView1);
 		expandListView.setAdapter(adapter);
-		
-		//button to click-expand
-		Button button=(Button) this.findViewById(R.id.button1);
-		button.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent=new Intent(EventViewActivity.this,MapRouteActivity.class);
-				startActivity(intent);
-				//if we need to put some data into this intent, add here.
-			}
-		});
 	}
-
 }
