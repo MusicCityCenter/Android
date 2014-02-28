@@ -18,14 +18,18 @@ import java.util.List;
  */
 public class Path {
 
-	private List<FloorplanEdge> edges;
+	private List<FloorplanEdge> edges_;
+	
+	public Path(List<FloorplanEdge> edges) {
+		edges_ = edges;
+	}
 
 	public List<FloorplanEdge> getEdges() {
-		return edges;
+		return edges_;
 	}
 
 	public void setEdges(List<FloorplanEdge> edges) {
-		this.edges = edges;
+		edges_ = edges;
 	}
 
 }

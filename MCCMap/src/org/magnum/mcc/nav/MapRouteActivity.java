@@ -8,9 +8,12 @@ package org.magnum.mcc.nav;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Toast;
 
 // Work Item 2
 public class MapRouteActivity extends Activity {
@@ -22,13 +25,16 @@ public class MapRouteActivity extends Activity {
 	private NavController navController_;
 	
 	private Handler handler_ = new Handler();
+	
+	private ProgressDialog progress_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		// Do stuff to setup the UI
-
+		progress_ = new ProgressDialog(this);
+		
 		// Obtain the request path data
 		Intent i = getIntent();
 		final String floorplanId = i.getStringExtra("floorplanId");
@@ -37,14 +43,14 @@ public class MapRouteActivity extends Activity {
 
 		// This should probably be pulled from shared preferences
 		// but can be hardcoded to the MCC appengine server for now
-		String server = "fill me in with the foo.appspot.blah url";
+		String server = "http://0-1-dot-mcc-backend.appspot.com";
 		int port = 80;
 		String baseUrl = "/mcc";
 		
 		// Update to use the NavController implementation created during
 		// this build cycle
-		navController_ = null;
-		navController_.setServer(server, port, baseUrl);
+		navController_ = new MappingNavControllerImpl(server, port, 
+													  baseUrl, this);
 		
 		navController_.loadFloorplan(floorplanId, new FloorplanListener() {
 			
@@ -110,5 +116,21 @@ public class MapRouteActivity extends Activity {
 			// top of the image specified in imageUrl
 		}
 	}
-
+	
+	
+	/** Sets the progress dialog according to the parameters */
+	public void setProgressVisibility(boolean visibility, String majorMsg, 
+									  String minorMsg) {
+		if(visibility)
+			progress_ = ProgressDialog.show(this, majorMsg, minorMsg);
+		else
+			progress_.dismiss();
+	}
+	
+	/** Shows a toast with the input message */
+	public void showToast(CharSequence msg) {
+		
+		int duration = Toast.LENGTH_SHORT;
+		Toast.makeText(this, msg, duration).show();
+	}
 }
