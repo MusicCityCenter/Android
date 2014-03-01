@@ -2,4 +2,8 @@
   @author weichen
 /
 
-jsonevent is an example for EvntViewActivity, right now I can not run the whole project because I do not have the connection to googlemap as Nolan show last week. There is a screenshot.jpg at this file and it shows the basic UI of this event function. 
+jsonevent is an example for EvntViewActivity, right now I can not run the whole project because I do not have the connection to googlemap as Nolan show last week. 
+There is a screenshot.jpg at this file and it shows the basic UI of this event function. 
+
+I made some modification about the "route" button, it will jump between two different UI, one with click-expand effect and one without click-expand effect.
+We can choose any one we want at our final decision. 
