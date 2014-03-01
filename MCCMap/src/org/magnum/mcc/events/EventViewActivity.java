@@ -8,8 +8,6 @@ package org.magnum.mcc.events;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,42 +17,37 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.magnum.mcc.nav.MapRouteActivity;
 
-import org.magnum.mccmap.R;
 
+import android.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-// Work Item 3
+//Work Item 3
 /**
- * This activity should show basic event information and
- * have a button that allows the user to launch the MapRouteActivity
- * to see directions on how to get to the event.
- * 
- * @author jules,
- * @author weichen 
- * @version 1.0
- *
- */
-public class EventViewActivity extends Activity {
+* This activity should show basic event information and
+* have a button that allows the user to launch the MapRouteActivity
+* to see directions on how to get to the event.
+* 
+* @author jules
+* @author weichen 
+* @version 1.0
+* 
+*/
 
-	private EventController eventController_;
+
+public class EventViewActivity extends Activity {
 	
-	//list to store JSON information
-	private List<String> eventname = new ArrayList<String>();
-	private List<List<String>> moreinfo = new ArrayList<List<String>>();
+	String description;
+	String title;
 	
 	//a http connection to link webpage where JSON is stored
 	private String getContent(String url) throws Exception {
@@ -81,188 +74,98 @@ public class EventViewActivity extends Activity {
 	}
 	
 	
-	//to initialize two list above
-	private void initializeData(String url) {
-		try {
-			String body = getContent(url);
-			JSONArray array = new JSONArray(body);
-
-			for (int k = 0; k < array.length(); k++) {
-				JSONObject obj = array.getJSONObject(k);
-				String name = obj.getString("name");
-				String description = obj.getString("description");
+	//change time to normal format
+	public String time(String t)
+	{
+		 int i = Integer.parseInt(t);
+		 int hour=i/60;
+		 int min=i-60*hour;
+		 String h=String.valueOf(hour);
+		 String m=String.valueOf(min);
+		 if(min==0)  m="00";
+		 if(min<10&&min>0)  m="0"+m;
+		 String time=h+":"+m;
+		 return time;	 
+	}
+	
+	//to initialize two text
+	private void initializeData(String url,String floorplanId,String eventId, String endId) throws Exception
+	{
+		
+		//what about endId£¿ In the example, there is no endId at the list of JSON
+		String body = getContent(url);
+		JSONArray array = new JSONArray(body);
+		for(int k = 0; k < array.length(); k++)
+		{
+			JSONObject obj = array.getJSONObject(k);
+			String id=obj.getString("id");
+			String floorplanid=obj.getString("floorplanId");
+			if(id.equals(floorplanId)&&floorplanid.equals(floorplanId))
+			{
+				String eventname="Name: "+obj.getString("name");
+				String room="Room: "+obj.getString("floorplanLocationId");
+				description="Description: "+obj.getString("description");
 				String day = obj.getString("day");
 				String month = obj.getString("month");
 				String year = obj.getString("year");
 				String starttime = obj.getString("startTime");
 				String endtime = obj.getString("endTime");
-
-				eventname.add(name + "\n" + year + "-" + month + "-" + day);
-				List<String> detail = new ArrayList<String>();
-				detail.add("from " + time(starttime) + " to " + time(endtime) + "\n"
-						+ "description: " + description);
-				moreinfo.add(detail);
+				String time= year + "-" + month + "-" + day+"\n" +"From "+time(starttime) + " to " + time(endtime) + "\n";
+				title=eventname+"\n"+room+"\n"+time;
 			}
-		} catch (Exception e) {
 		}
 	}
 	
-	//change time to normal format
-	public String time(String t)
-		{
-			 int i = Integer.parseInt(t);
-			 int hour=i/60;
-			 int min=i-60*hour;
-			 String h=String.valueOf(hour);
-			 String m=String.valueOf(min);
-			 if(min==0)  m="00";
-			 if(min<10&&min>0)  m="0"+m;
-			 String time=h+":"+m;
-			 return time;
-			 
-		}
 	
-	@Override
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		// Do stuff to setup the UI
-		setContentView(R.layout.eventview_activity);
+		setContentView(R.layout.eventview);
 		
 		// Obtain the request path data
 		Intent i = getIntent();
 		final String floorplanId = i.getStringExtra("floorplanId");
 		final String eventId = i.getStringExtra("eventId");
 		final String endId = i.getStringExtra("endId");
-
+		
 		// This should probably be pulled from shared preferences
 		// but can be hardcoded to the MCC appengine server for now
 		String server = "http://0-1-dot-mcc-backend.appspot.com";
 		int port = 80;
 		String baseUrl = "/mcc/events/full-test-1/on/5/9/2014";
 		String url = server + baseUrl;
-		//just hardcoded right now, to be modified when server is done
-	
-		initializeData(url);
 		
-		//a expandableListView to implement click-expand function, and show all event information
-		ExpandableListAdapter adapter = new BaseExpandableListAdapter() {
-
-			@Override
-			public Object getChild(int groupPosition, int childPosition) {
-				
-				return moreinfo.get(groupPosition).get(childPosition);
-			}
-
-			@Override
-			public long getChildId(int groupPosition, int childPosition) {
-				
-				return childPosition;
-			}
-
-			@Override
-			public int getChildrenCount(int groupPosition) {
-				
-				return moreinfo.get(groupPosition).size();
-			}
-
-			@Override
-			public View getChildView(int groupPosition, int childPosition,
-					boolean isLastChild, View convertView, ViewGroup parent) {
-				
-				String string = moreinfo.get(groupPosition).get(childPosition);
-				TextView textview = getTextViewchild(string);
-				return textview;
-			}
-
-			public TextView getTextViewchild(String s) {
-				// Layout parameters for the ExpandableListView
-				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-						ViewGroup.LayoutParams.FILL_PARENT, 80);
-
-				TextView text = new TextView(EventViewActivity.this);
-				text.setLayoutParams(lp);
-				// Center the text vertically
-				text.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-				// Set the text starting position
-				text.setPadding(36, 0, 0, 0);
-
-				text.setText(s);
-				return text;
-			}
-
-			@Override
-			public Object getGroup(int groupPosition) {
-				
-				return eventname.get(groupPosition);
-			}
-
-			@Override
-			public int getGroupCount() {
-				
-				return eventname.size();
-			}
-
-			@Override
-			public long getGroupId(int groupPosition) {
-				
-				return groupPosition;
-			}
-
-			@Override
-			public View getGroupView(int groupPosition, boolean isExpanded,
-					View convertView, ViewGroup parent) {
-				
-				String string = eventname.get(groupPosition);
-				TextView textview = getTextViewgroup(string);
-				return textview;
-			}
-
-			public TextView getTextViewgroup(String s) {
-				// Layout parameters for the ExpandableListView
-				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-						ViewGroup.LayoutParams.FILL_PARENT, 80);
-
-				TextView text = new TextView(EventViewActivity.this);
-				text.setLayoutParams(lp);
-				// Center the text vertically
-				text.setGravity(Gravity.CENTER | Gravity.CENTER);
-				// Set the text starting position
-				text.setPadding(36, 0, 0, 0);
-
-				text.setText(s);
-				return text;
-			}
-
-			@Override
-			public boolean hasStableIds() {
-				
-				return false;
-			}
-
-			@Override
-			public boolean isChildSelectable(int groupPosition,
-					int childPosition) {
-				
-				return false;
-			}
-
-		};
-		ExpandableListView expandListView = (ExpandableListView) findViewById(R.id.expandableListView1);
-		expandListView.setAdapter(adapter);
 		
-		//button to click-expand
-		Button button=(Button) this.findViewById(R.id.button1);
+		initializeData(url,floorplanId,eventId,endId);
+		
+		TextView text1=(TextView)this.findViewById(R.id.textView2);
+		text1.setText(title);
+		text1.setGravity(Gravity.CENTER | Gravity.CENTER);
+		//there can also be some other parameters to set for this text
+		
+		
+		TextView text2=(TextView)this.findViewById(R.id.textView3);
+		text2.setText(description);
+		text2.setGravity(Gravity.CENTER | Gravity.CENTER);
+		//there can also be some other parameters to set for this text
+		
+		
+		
+		
+		// button to jump to nav
+		Button button = (Button) this.findViewById(R.id.button1);
 		button.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				
-				Intent intent=new Intent(EventViewActivity.this,MapRouteActivity.class);
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(EventViewActivity.this,
+						MapRouteActivity.class);
 				startActivity(intent);
-				//if we need to put some data into this intent, add here.
+				// if we need to put some data into this intent, add here.
 			}
 		});
 	}
-
 }
