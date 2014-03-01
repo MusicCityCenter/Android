@@ -22,8 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.magnum.mcc.nav.MapRouteActivity;
 
+import org.magnum.mccmap.R;
 
-import android.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,7 +43,7 @@ import android.widget.TextView;
  * have a button that allows the user to launch the MapRouteActivity
  * to see directions on how to get to the event.
  * 
- * @author jules
+ * @author jules,
  * @author weichen 
  * @version 1.0
  *
@@ -53,8 +53,8 @@ public class EventViewActivity extends Activity {
 	private EventController eventController_;
 	
 	//list to store JSON information
-	List<String> eventname = new ArrayList<String>();
-	List<List<String>> moreinfo = new ArrayList<List<String>>();
+	private List<String> eventname = new ArrayList<String>();
+	private List<List<String>> moreinfo = new ArrayList<List<String>>();
 	
 	//a http connection to link webpage where JSON is stored
 	private String getContent(String url) throws Exception {
@@ -127,7 +127,7 @@ public class EventViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		// Do stuff to setup the UI
-		setContentView(R.layout.eventviewactivity);
+		setContentView(R.layout.eventview_activity);
 		
 		// Obtain the request path data
 		Intent i = getIntent();
@@ -150,26 +150,26 @@ public class EventViewActivity extends Activity {
 
 			@Override
 			public Object getChild(int groupPosition, int childPosition) {
-				// TODO Auto-generated method stub
+				
 				return moreinfo.get(groupPosition).get(childPosition);
 			}
 
 			@Override
 			public long getChildId(int groupPosition, int childPosition) {
-				// TODO Auto-generated method stub
+				
 				return childPosition;
 			}
 
 			@Override
 			public int getChildrenCount(int groupPosition) {
-				// TODO Auto-generated method stub
+				
 				return moreinfo.get(groupPosition).size();
 			}
 
 			@Override
 			public View getChildView(int groupPosition, int childPosition,
 					boolean isLastChild, View convertView, ViewGroup parent) {
-				// TODO Auto-generated method stub
+				
 				String string = moreinfo.get(groupPosition).get(childPosition);
 				TextView textview = getTextViewchild(string);
 				return textview;
@@ -193,26 +193,26 @@ public class EventViewActivity extends Activity {
 
 			@Override
 			public Object getGroup(int groupPosition) {
-				// TODO Auto-generated method stub
+				
 				return eventname.get(groupPosition);
 			}
 
 			@Override
 			public int getGroupCount() {
-				// TODO Auto-generated method stub
+				
 				return eventname.size();
 			}
 
 			@Override
 			public long getGroupId(int groupPosition) {
-				// TODO Auto-generated method stub
+				
 				return groupPosition;
 			}
 
 			@Override
 			public View getGroupView(int groupPosition, boolean isExpanded,
 					View convertView, ViewGroup parent) {
-				// TODO Auto-generated method stub
+				
 				String string = eventname.get(groupPosition);
 				TextView textview = getTextViewgroup(string);
 				return textview;
@@ -236,14 +236,14 @@ public class EventViewActivity extends Activity {
 
 			@Override
 			public boolean hasStableIds() {
-				// TODO Auto-generated method stub
+				
 				return false;
 			}
 
 			@Override
 			public boolean isChildSelectable(int groupPosition,
 					int childPosition) {
-				// TODO Auto-generated method stub
+				
 				return false;
 			}
 
@@ -257,7 +257,7 @@ public class EventViewActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				
 				Intent intent=new Intent(EventViewActivity.this,MapRouteActivity.class);
 				startActivity(intent);
 				//if we need to put some data into this intent, add here.

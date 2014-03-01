@@ -6,16 +6,24 @@
  */
 package org.magnum.mcc.events;
 
+import java.util.UUID;
+
+
 public class Event {
 
-	private String id;
+	private String id;	
 	private String name;
 	private String description;
-	private String floorplanLocationId;
+	private int day;
+	private int month;
+	private int year;
+	private long startTime;
 
-	// I should be changed to some specific type
-	// ... probably from the JodaTime library.
-	private String time;
+	private long endTime;
+
+	private String floorplanId;
+
+	private String floorplanLocationId;
 
 	public String getId() {
 		return id;
@@ -49,12 +57,52 @@ public class Event {
 		this.floorplanLocationId = floorplanLocationId;
 	}
 
-	public String getTime() {
-		return time;
+	public int getDay() {
+		return day;
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+	public void setDay(int day) {
+		this.day = day;
+	}
+
+	public int getMonth() {
+		return month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
+
+	public long getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(long endTime) {
+		this.endTime = endTime;
+	}
+
+	public String getFloorplanId() {
+		return floorplanId;
+	}
+
+	public void setFloorplanId(String floorplanId) {
+		this.floorplanId = floorplanId;
 	}
 
 }

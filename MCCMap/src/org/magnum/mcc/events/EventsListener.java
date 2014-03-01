@@ -6,10 +6,10 @@
 */
 package org.magnum.mcc.events;
 
-import java.util.Set;
+import java.util.List;
 
 public interface EventsListener {
 
-	public void setEvents(Set<Event> events);
+	public void setEvents(List<Event> events);
 	
 }

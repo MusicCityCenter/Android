@@ -22,6 +22,6 @@ public interface EventController {
 	 * @param end
 	 * @param l
 	 */
-	public void getEventsOnDay(int month, int day, EventsListener l);
+	public void getEventsOnDay(int month, int day, int year, EventsListener l);
 	
 }
