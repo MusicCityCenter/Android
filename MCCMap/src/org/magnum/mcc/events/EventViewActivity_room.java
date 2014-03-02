@@ -128,8 +128,9 @@ public class EventViewActivity_room extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		
 		// Do stuff to setup the UI
-		setContentView(R.layout.eventviewactivity);
+		setContentView(org.magnum.mccmap.R.layout.eventviewactivity);
 		
 		// Obtain the request path data
 		Intent i = getIntent();
@@ -250,11 +251,12 @@ public class EventViewActivity_room extends Activity {
 			}
 
 		};
-		ExpandableListView expandListView = (ExpandableListView) findViewById(R.id.expandableListView1);
+		ExpandableListView expandListView = 
+				(ExpandableListView) findViewById(org.magnum.mccmap.R.id.expandableListView1);
 		expandListView.setAdapter(adapter);
 		
 		//button to click-expand
-		Button button=(Button) this.findViewById(R.id.button1);
+		Button button=(Button) this.findViewById(org.magnum.mccmap.R.id.button1);
 		button.setOnClickListener(new View.OnClickListener() {
 			
 			@Override

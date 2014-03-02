@@ -122,7 +122,7 @@ public class EventViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		// Do stuff to setup the UI
-		setContentView(R.layout.eventview);
+		setContentView(org.magnum.mccmap.R.layout.eventview);
 		
 		// Obtain the request path data
 		Intent i = getIntent();
@@ -138,15 +138,21 @@ public class EventViewActivity extends Activity {
 		String url = server + baseUrl;
 		
 		
-		initializeData(url,floorplanId,eventId,endId);
+		try {
+			initializeData(url,floorplanId,eventId,endId);
+		} catch (Exception e) {
+			/** Someone should look at this! */
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		TextView text1=(TextView)this.findViewById(R.id.textView2);
+		TextView text1=(TextView)this.findViewById(org.magnum.mccmap.R.id.textView2);
 		text1.setText(title);
 		text1.setGravity(Gravity.CENTER | Gravity.CENTER);
 		//there can also be some other parameters to set for this text
 		
 		
-		TextView text2=(TextView)this.findViewById(R.id.textView3);
+		TextView text2=(TextView)this.findViewById(org.magnum.mccmap.R.id.textView3);
 		text2.setText(description);
 		text2.setGravity(Gravity.CENTER | Gravity.CENTER);
 		//there can also be some other parameters to set for this text
@@ -155,7 +161,7 @@ public class EventViewActivity extends Activity {
 		
 		
 		// button to jump to nav
-		Button button = (Button) this.findViewById(R.id.button1);
+		Button button = (Button) this.findViewById(org.magnum.mccmap.R.id.button1);
 		button.setOnClickListener(new View.OnClickListener() {
 
 			@Override

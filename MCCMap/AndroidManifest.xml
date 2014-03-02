@@ -35,11 +35,10 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".Map"></activity>
-        <activity android:name=".MapActivity"></activity>
-        <activity android:name=".WayfindingActivity"></activity>
-        <activity android:name=".RestaurantActivity"></activity>
+        <activity android:name="org.magnum.mccmap.WayfindingActivity"></activity>
+        <activity android:name="org.magnum.mccmap.RestaurantActivity"></activity>
         <activity android:name="org.magnum.mcc.events.EventViewActivity"></activity>
+        <activity android:name="org.magnum.mcc.events.EventViewActivity_room"></activity>
         <activity android:name="org.magnum.mcc.nav.MapRouteActivity"></activity>       
         
         <!--  

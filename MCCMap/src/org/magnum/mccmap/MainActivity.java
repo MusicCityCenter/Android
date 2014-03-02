@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import org.magnum.mcc.events.Event;
 import org.magnum.mcc.events.EventController;
 import org.magnum.mcc.events.EventControllerImpl;
 import org.magnum.mcc.events.EventsListener;
+import org.magnum.mcc.nav.MapRouteActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -113,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent= new Intent(MainActivity.this,Map.class);
+				Intent intent= new Intent(MainActivity.this, MapRouteActivity.class);
 				startActivity(intent);
 			}
 		});        
