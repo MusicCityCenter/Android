@@ -68,22 +68,37 @@ public class MapRouteActivity extends Activity {
 				// endId from the navData_.getFloorplan() object
 				FloorplanLocation end = null;
 				
-				navController_.getShortestPath(floorplanId, start, end, new NavigationListener() {
-					
-					@Override
-					public void setPath(Path p) {
-						path_ = p;
-						
-						// Now referesh the UI
-						Runnable r = new Runnable() {
-							@Override
-							public void run() {
-								updatePathDisplay();
-							}
-						};
-						handler_.post(r);
+				// Because FloorplanLocations are stored in a set for now, we must
+				// iterate through it to find the correct locations;
+				for(FloorplanLocation fpl : navData_.getFloorplan().getLocations()) {
+					if(fpl.getId().equals(startId)) {
+						start = fpl;
 					}
-				});
+					
+					if(fpl.getId().equals(endId)) {
+						end = fpl;
+					}
+				}
+				
+				if(start != null && end != null) {
+					navController_.getShortestPath(floorplanId, start, end, 
+							new NavigationListener() {
+						
+						@Override
+						public void setPath(Path p) {
+							path_ = p;
+							
+							// Now referesh the UI
+							Runnable r = new Runnable() {
+								@Override
+								public void run() {
+									updatePathDisplay();
+								}
+							};
+							handler_.post(r);
+						}
+					});
+				}
 			}
 		});
 	}

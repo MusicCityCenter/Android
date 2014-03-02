@@ -42,13 +42,14 @@
         <activity android:name="org.magnum.mcc.events.EventViewActivity"></activity>
         <activity android:name="org.magnum.mcc.nav.MapRouteActivity"></activity>       
         
-        <meta-data
+        <!--  
+ 	    <meta-data
     		android:name="com.google.android.gms.version"
     		android:value="@integer/google_play_services_version" />
         
         <meta-data
     		android:name="com.google.android.maps.v2.API_KEY"
-    		android:value="AIzaSyA-VYr5oQu7fjQcpYAukQ1MjLSBBqpDSaE"/>
+    		android:value="AIzaSyA-VYr5oQu7fjQcpYAukQ1MjLSBBqpDSaE"/> -->
         
     </application>
 

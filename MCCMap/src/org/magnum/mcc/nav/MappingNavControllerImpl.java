@@ -23,8 +23,10 @@ public class MappingNavControllerImpl implements NavController {
 	private String urlBase_;
 	
 	/** The paths to the mapping and path end-points */
+	private String targetUrl_;
+	private String targetFloorplanId_;
 	private static String MAPPING_PATH = "/floorplan/mapping/";
-	private static String NAVIGATION_PATH = "/path/";
+	private static String NAV_PATH = "/path/";
 	
 	/** The port on which the server is communicating */
 	private int port_;
@@ -67,11 +69,9 @@ public class MappingNavControllerImpl implements NavController {
 	 * 	to the input FloorplanListener */
 	@Override
 	public void loadFloorplan(String floorplanId, FloorplanListener fl) {
-		new FloorplanNavDataAsyncTask().execute(MAPPING_PATH + floorplanId);
-		
-		if(fpNavData_ != null) {
-			fl.setFloorplanNavigationData(floorplanId, fpNavData_);
-		}
+		targetFloorplanId_ = floorplanId;
+		targetUrl_ = host_ + urlBase_ + MAPPING_PATH + targetFloorplanId_;		
+		new FloorplanNavDataAsyncTask().execute(fl);
 	}
 
 	
@@ -79,40 +79,40 @@ public class MappingNavControllerImpl implements NavController {
 	 * 	and marshals it to the NavigationListener for processing */
 	@Override
 	public void getShortestPath(String floorplanId, FloorplanLocation start,
-			FloorplanLocation end, NavigationListener l) {
+			FloorplanLocation end, NavigationListener navListener) {
 		
-		String path = NAVIGATION_PATH + floorplanId + "/" 
+		targetFloorplanId_ = floorplanId;
+		targetUrl_ = host_ + urlBase_ + NAV_PATH + targetFloorplanId_ + "/" 
 						+ start.getId() + "/" + end.getId();
-		new ShortestPathAsyncTask().execute(path);
-		
-		if(shortestPath_ != null) {
-			l.setPath(shortestPath_);
-		}
+		new ShortestPathAsyncTask().execute(navListener);
 	}
 	
 	
 	/** The AsyncTask responsible for retrieving the FloorplanNavigationData */
 	private class FloorplanNavDataAsyncTask extends 
-		AsyncTask<String, Integer, FloorplanNavigationData> {
+		AsyncTask<FloorplanListener, Integer, FloorplanNavigationData> {
 		
 		@Override
 		protected void onPreExecute() {
 			setProgressVisibility(true, "Retrieving Floorplan", "Shouldn't be long now!");
+			
 		}
 		
 		@Override
-		protected FloorplanNavigationData doInBackground(String... arg0) {			
+		protected FloorplanNavigationData doInBackground(FloorplanListener... fpListeners) {			
 			FloorplanNavigationData floorplanData = null;
 			
 			try {
-				URL url = new URL(host_ + urlBase_ + arg0[0]);
+				URL url = new URL(targetUrl_);
 				ObjectMapper mapper = new ObjectMapper();
-				floorplanData = mapper.readValue(url, FloorplanNavigationData.class);	
+				floorplanData = mapper.readValue(url, FloorplanNavigationData.class);
 			} 
 			catch (IOException e) {
 				Log.d(TAG, "IO Exception while forming/reading URL");
 			}
 
+			fpNavData_ = floorplanData;
+			fpListeners[0].setFloorplanNavigationData(targetFloorplanId_, fpNavData_);
 			return floorplanData;
 		}
 		
@@ -121,7 +121,6 @@ public class MappingNavControllerImpl implements NavController {
 			setProgressVisibility(false, null, null);
 			
 			if(floorplanData != null) {
-				fpNavData_ = floorplanData;
 				showToast("Successfully loaded navigation data!");
 			}
 			else {
@@ -133,7 +132,7 @@ public class MappingNavControllerImpl implements NavController {
 	
 	/** The AsyncTask responsible for retrieving the shortest path */
 	private class ShortestPathAsyncTask extends 
-		AsyncTask<String, Integer, Path> {
+		AsyncTask<NavigationListener, Integer, Path> {
 		
 		@Override
 		protected void onPreExecute() {
@@ -141,11 +140,11 @@ public class MappingNavControllerImpl implements NavController {
 		}
 		
 		@Override
-		protected Path doInBackground(String... arg0) {			
+		protected Path doInBackground(NavigationListener... navListeners) {			
 			List<FloorplanEdge> path = null;
 			
 			try {
-				URL url = new URL(host_ + urlBase_ + arg0[0]);
+				URL url = new URL(targetUrl_);
 				ObjectMapper mapper = new ObjectMapper();
 				path = mapper.readValue(url, new TypeReference<List<FloorplanEdge>>(){});	
 			} 
@@ -153,11 +152,8 @@ public class MappingNavControllerImpl implements NavController {
 				Log.d(TAG, "IO Exception while forming/reading URL");
 			}
 			
-			Path shortestPath = null;
-			if(path != null) {
-				shortestPath = new Path(path);
-			}
-
+			Path shortestPath = new Path(path);
+			navListeners[0].setPath(shortestPath);
 			return shortestPath;
 		}
 		
@@ -166,7 +162,6 @@ public class MappingNavControllerImpl implements NavController {
 			setProgressVisibility(false, null, null);
 			
 			if(shortestPath != null) {
-				shortestPath_ = shortestPath;
 				showToast("Successfully loaded path!");
 			}
 			else {
