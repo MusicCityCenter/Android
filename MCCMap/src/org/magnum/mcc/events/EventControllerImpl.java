@@ -81,7 +81,7 @@ public class EventControllerImpl implements EventController {
 				URL url = new URL(path[0]);
 				ObjectMapper mapper = new ObjectMapper();
 				events = mapper.readValue(url, new TypeReference<List<Event>>(){});
-				Log.d(TAG, "event from server:"+ events.get(0).getDescription());
+				//Log.d(TAG, "event from server:"+ events.get(0).getDescription());
 			} 
 			catch (IOException e) {
 				Log.d(TAG, "IO Exception while forming/reading URL");

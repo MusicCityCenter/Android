@@ -11,6 +11,7 @@ import org.magnum.mcc.events.EventControllerImpl;
 import org.magnum.mcc.events.EventsListener;
 import org.magnum.mcc.nav.MapRouteActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,7 +41,7 @@ import android.widget.SimpleAdapter;
  *
  */
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
 	
 	// Fill me in with the current floorplanId...
@@ -113,6 +114,8 @@ public class MainActivity extends ActionBarActivity {
 			
 			@Override
 			public void onClick(View v) {
+				/** Is this correct?! I changed it from "Map.class" to 
+				 * MapRouteActivity.class to get it to compile, but it might be wrong */
 				Intent intent= new Intent(MainActivity.this, MapRouteActivity.class);
 				startActivity(intent);
 			}
@@ -183,7 +186,10 @@ public class MainActivity extends ActionBarActivity {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_map:
-            	Intent i1= new Intent(MainActivity.this,WayfindingActivity.class);
+            	Intent i1= new Intent(MainActivity.this, MapRouteActivity.class);
+            	i1.putExtra("floorplanId", "full-test-1");
+            	i1.putExtra("startId", "B-1-2");
+            	i1.putExtra("endId", "103");
 				startActivity(i1);
                 return true;
             case R.id.action_event_calendar:

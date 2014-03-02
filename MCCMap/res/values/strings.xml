@@ -6,5 +6,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="location_prompt">Where would you like to go?</string>
     <string name="floor_diagram">A diagram of the MCCs floors</string>
+    <string name="map_description">A map of the MCCs floors</string>
 
 </resources>

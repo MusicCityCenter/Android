@@ -7,16 +7,23 @@
 package org.magnum.mcc.nav;
 
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 // Work Item 2
 public class MapRouteActivity extends Activity {
+	
+	/** Used for debugging */
+    private final String TAG = this.getClass().getSimpleName();
 
 	private FloorplanNavigationData navData_;
 
@@ -27,19 +34,27 @@ public class MapRouteActivity extends Activity {
 	private Handler handler_ = new Handler();
 	
 	private ProgressDialog progress_;
+	
+	private ImageView mapImageView_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(org.magnum.mccmap.R.layout.maproute_activity);
 
 		// Do stuff to setup the UI
 		progress_ = new ProgressDialog(this);
+		mapImageView_ = (ImageView) findViewById(org.magnum.mccmap.R.id.mapImageView);
 		
 		// Obtain the request path data
 		Intent i = getIntent();
 		final String floorplanId = i.getStringExtra("floorplanId");
 		final String startId = i.getStringExtra("startId");
 		final String endId = i.getStringExtra("endId");
+		
+		Log.d(TAG, "floorplan: " + floorplanId);
+		Log.d(TAG, "start: " + startId);
+		Log.d(TAG, "end: " + endId);
 
 		// This should probably be pulled from shared preferences
 		// but can be hardcoded to the MCC appengine server for now
@@ -79,6 +94,8 @@ public class MapRouteActivity extends Activity {
 						end = fpl;
 					}
 				}
+				Log.d(TAG, "start: " + start.getId());
+				Log.d(TAG, "end: " + end.getId());
 				
 				if(start != null && end != null) {
 					navController_.getShortestPath(floorplanId, start, end, 
@@ -118,7 +135,9 @@ public class MapRouteActivity extends Activity {
 		// to make remotely loading the images easy:
 		// https://github.com/koush/UrlImageViewHelper
 		String imageUrl = navData_.getMapping().getImageUrl();
+		UrlImageViewHelper.setUrlDrawable(mapImageView_, imageUrl);
 		
+		Log.d(TAG, "imageURL: " + imageUrl);
 		
 		for(FloorplanEdge edge : path_.getEdges()){
 			FloorplanLocation start = edge.getStart();

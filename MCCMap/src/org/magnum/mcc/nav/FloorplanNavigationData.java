@@ -6,6 +6,8 @@
  */
 package org.magnum.mcc.nav;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class FloorplanNavigationData {
 
 	private Floorplan floorplan;

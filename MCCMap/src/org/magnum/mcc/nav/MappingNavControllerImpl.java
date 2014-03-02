@@ -70,7 +70,9 @@ public class MappingNavControllerImpl implements NavController {
 	@Override
 	public void loadFloorplan(String floorplanId, FloorplanListener fl) {
 		targetFloorplanId_ = floorplanId;
-		targetUrl_ = host_ + urlBase_ + MAPPING_PATH + targetFloorplanId_;		
+		targetUrl_ = host_ + urlBase_ + MAPPING_PATH + targetFloorplanId_;
+		Log.d(TAG, "fpId: " + targetFloorplanId_);
+		Log.d(TAG, "url: " + targetUrl_);
 		new FloorplanNavDataAsyncTask().execute(fl);
 	}
 
@@ -84,6 +86,8 @@ public class MappingNavControllerImpl implements NavController {
 		targetFloorplanId_ = floorplanId;
 		targetUrl_ = host_ + urlBase_ + NAV_PATH + targetFloorplanId_ + "/" 
 						+ start.getId() + "/" + end.getId();
+		Log.d(TAG, "fpId: " + targetFloorplanId_);
+		Log.d(TAG, "url: " + targetUrl_);
 		new ShortestPathAsyncTask().execute(navListener);
 	}
 	
@@ -102,6 +106,7 @@ public class MappingNavControllerImpl implements NavController {
 		protected FloorplanNavigationData doInBackground(FloorplanListener... fpListeners) {			
 			FloorplanNavigationData floorplanData = null;
 			
+			Log.d(TAG, "url: " + targetUrl_);
 			try {
 				URL url = new URL(targetUrl_);
 				ObjectMapper mapper = new ObjectMapper();
@@ -110,9 +115,11 @@ public class MappingNavControllerImpl implements NavController {
 			catch (IOException e) {
 				Log.d(TAG, "IO Exception while forming/reading URL");
 			}
-
-			fpNavData_ = floorplanData;
-			fpListeners[0].setFloorplanNavigationData(targetFloorplanId_, fpNavData_);
+			
+			if(floorplanData != null) {
+				fpNavData_ = floorplanData;
+				fpListeners[0].setFloorplanNavigationData(targetFloorplanId_, fpNavData_);
+			}
 			return floorplanData;
 		}
 		
@@ -143,6 +150,7 @@ public class MappingNavControllerImpl implements NavController {
 		protected Path doInBackground(NavigationListener... navListeners) {			
 			List<FloorplanEdge> path = null;
 			
+			Log.d(TAG, "url: " + targetUrl_);
 			try {
 				URL url = new URL(targetUrl_);
 				ObjectMapper mapper = new ObjectMapper();
@@ -152,8 +160,11 @@ public class MappingNavControllerImpl implements NavController {
 				Log.d(TAG, "IO Exception while forming/reading URL");
 			}
 			
-			Path shortestPath = new Path(path);
-			navListeners[0].setPath(shortestPath);
+			Path shortestPath = null;
+			if(path != null) {
+				shortestPath = new Path(path);
+				navListeners[0].setPath(shortestPath);
+			}
 			return shortestPath;
 		}
 		
