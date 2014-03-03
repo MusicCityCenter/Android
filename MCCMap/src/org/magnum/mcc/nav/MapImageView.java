@@ -11,11 +11,13 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 
 public class MapImageView extends ImageView implements OnTouchListener {
 	
@@ -50,35 +52,47 @@ public class MapImageView extends ImageView implements OnTouchListener {
     private int mBitmapWidth = -1;
     private int mBitmapHeight = -1;
     private boolean mDraggable = true;
+    
+    private static int PICTURE_WIDTH = 2275;
+    private static int PICTURE_HEIGHT = 3829;
+    private Coord lastCoord_;
 
 	public MapImageView(Context context) {
 		super(context);
 		this.setOnTouchListener(this);
-		linePaint_ = new Paint(Paint.ANTI_ALIAS_FLAG);
-		linePaint_.setColor(Color.CYAN);
+		setupView(context);
 	}
 	
 	public MapImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.setOnTouchListener(this);
-		linePaint_ = new Paint(Paint.ANTI_ALIAS_FLAG);
-		linePaint_.setColor(Color.CYAN);
+		setupView(context);
 	}
 	
 	public MapImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.setOnTouchListener(this);
-        linePaint_ = new Paint(Paint.ANTI_ALIAS_FLAG);
-		linePaint_.setColor(Color.CYAN);
+        setupView(context);
     }
+	
+	private void setupView(Context context) {
+		linePaint_ = new Paint(Paint.ANTI_ALIAS_FLAG);
+		linePaint_.setColor(Color.CYAN);
+		linePaint_.setStrokeWidth(10f);
+	}
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
-		if(drawPath_ != null) {
+		float widthScale = (float) getWidth()/PICTURE_WIDTH;
+		float heightScale = (float) getHeight()/PICTURE_HEIGHT;
+ 		if(drawPath_ != null) {
+ 			lastCoord_ = drawPath_.get(0);
 			for(Coord c : drawPath_) {
-				canvas.drawCircle(c.getX() - 300, c.getY() - 3000, 10f, linePaint_);
+				canvas.drawLine(lastCoord_.getX()*widthScale+198, lastCoord_.getY()*heightScale,
+								c.getX()*widthScale+198, c.getY()*heightScale, linePaint_);
+				lastCoord_ = c;
 				Log.d(TAG, c.getX() + " " + c.getY());
 			}
 		}

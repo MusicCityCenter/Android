@@ -39,7 +39,8 @@
         <activity android:name="org.magnum.mccmap.RestaurantActivity"></activity>
         <activity android:name="org.magnum.mcc.events.EventViewActivity"></activity>
         <activity android:name="org.magnum.mcc.events.EventViewActivity_room"></activity>
-        <activity android:name="org.magnum.mcc.nav.MapRouteActivity"></activity>       
+        <activity android:name="org.magnum.mcc.nav.MapRouteActivity"
+            	  android:theme="@android:style/Theme.Black.NoTitleBar" />      
         
         <!--  
  	    <meta-data

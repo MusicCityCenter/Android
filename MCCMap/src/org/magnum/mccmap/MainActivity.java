@@ -188,8 +188,8 @@ public class MainActivity extends Activity {
             case R.id.action_map:
             	Intent i1= new Intent(MainActivity.this, MapRouteActivity.class);
             	i1.putExtra("floorplanId", "full-test-1");
-            	i1.putExtra("startId", "B-1-2");
-            	i1.putExtra("endId", "103");
+            	i1.putExtra("startId", "B-1-3");
+            	i1.putExtra("endId", "S-1m-1");
 				startActivity(i1);
                 return true;
             case R.id.action_event_calendar:
