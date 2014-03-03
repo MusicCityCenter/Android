@@ -21,6 +21,11 @@ public class FloorplanImageMapping {
 
 	private String imageUrl;
 	private Map<String, Coord> mapping = new HashMap<String, Coord>();
+	
+	public FloorplanImageMapping(String url, Map<String, Coord> map) {
+		imageUrl = url;
+		mapping = map;
+	}
 
 	public String getImageUrl() {
 		return imageUrl;

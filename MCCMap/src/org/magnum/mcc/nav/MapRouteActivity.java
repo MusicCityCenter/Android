@@ -7,6 +7,9 @@
 package org.magnum.mcc.nav;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Activity;
@@ -19,7 +22,6 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-// Work Item 2
 public class MapRouteActivity extends Activity {
 	
 	/** Used for debugging */
@@ -35,7 +37,9 @@ public class MapRouteActivity extends Activity {
 	
 	private ProgressDialog progress_;
 	
-	private ImageView mapImageView_;
+	private MapImageView mapImageView_;
+	
+	private String serverBase_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,7 @@ public class MapRouteActivity extends Activity {
 
 		// Do stuff to setup the UI
 		progress_ = new ProgressDialog(this);
-		mapImageView_ = (ImageView) findViewById(org.magnum.mccmap.R.id.mapImageView);
+		mapImageView_ = (MapImageView) findViewById(org.magnum.mccmap.R.id.mapImageView);
 		
 		// Obtain the request path data
 		Intent i = getIntent();
@@ -62,6 +66,8 @@ public class MapRouteActivity extends Activity {
 		int port = 80;
 		String baseUrl = "/mcc";
 		
+		serverBase_ = server;
+		
 		// Update to use the NavController implementation created during
 		// this build cycle
 		navController_ = new MappingNavControllerImpl(server, port, 
@@ -77,25 +83,13 @@ public class MapRouteActivity extends Activity {
 				
 				// Change me to obtain the FloorplanLocation with the specified
 				// startId from the navData_.getFloorplan() object
-				FloorplanLocation start = null;
+				FloorplanLocation start = 
+						navData_.getFloorplan().getLocations().get(startId);
 				
 				// Change me to obtain the FloorplanLocation with the specified
 				// endId from the navData_.getFloorplan() object
-				FloorplanLocation end = null;
-				
-				// Because FloorplanLocations are stored in a set for now, we must
-				// iterate through it to find the correct locations;
-				for(FloorplanLocation fpl : navData_.getFloorplan().getLocations()) {
-					if(fpl.getId().equals(startId)) {
-						start = fpl;
-					}
-					
-					if(fpl.getId().equals(endId)) {
-						end = fpl;
-					}
-				}
-				Log.d(TAG, "start: " + start.getId());
-				Log.d(TAG, "end: " + end.getId());
+				FloorplanLocation end = 
+						navData_.getFloorplan().getLocations().get(endId);
 				
 				if(start != null && end != null) {
 					navController_.getShortestPath(floorplanId, start, end, 
@@ -134,21 +128,19 @@ public class MapRouteActivity extends Activity {
 		// want to just use a simple ImageView and this library
 		// to make remotely loading the images easy:
 		// https://github.com/koush/UrlImageViewHelper
-		String imageUrl = navData_.getMapping().getImageUrl();
+		String imageUrl = serverBase_ + navData_.getMapping().getImageUrl();
+		UrlImageViewHelper.setUseBitmapScaling(true);
 		UrlImageViewHelper.setUrlDrawable(mapImageView_, imageUrl);
 		
-		Log.d(TAG, "imageURL: " + imageUrl);
 		
+		List<Coord> pathCoords = new ArrayList<Coord>();
 		for(FloorplanEdge edge : path_.getEdges()){
-			FloorplanLocation start = edge.getStart();
-			FloorplanLocation end = edge.getEnd();
-			
-			Coord startLoc = navData_.getMapping().getImageLocation(start);
-			Coord endLoc = navData_.getMapping().getImageLocation(end);
-			
-			//Draw a line from startLoc.x,startLoc.y to endLoc.x,endLoc.y on 
-			// top of the image specified in imageUrl
+			pathCoords.add(navData_.getMapping().getImageLocation(edge.getStart()));
+			pathCoords.add(navData_.getMapping().getImageLocation(edge.getEnd()));
 		}
+		
+		// Sets the coords and requires the view to redraw
+		mapImageView_.setPath(pathCoords);
 	}
 	
 	

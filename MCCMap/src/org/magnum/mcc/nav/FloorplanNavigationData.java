@@ -12,6 +12,11 @@ public class FloorplanNavigationData {
 
 	private Floorplan floorplan;
 	private FloorplanImageMapping mapping;
+	
+	public FloorplanNavigationData(Floorplan fp, FloorplanImageMapping map) {
+		floorplan = fp;
+		mapping = map;
+	}
 
 	public Floorplan getFloorplan() {
 		return floorplan;

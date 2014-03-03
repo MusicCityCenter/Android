@@ -15,6 +15,20 @@ public class FloorplanEdge {
 
 	public FloorplanEdge() {
 	}
+	
+	public FloorplanEdge(FloorplanLocation st, FloorplanLocation endLoc, double len) {
+		start = st;
+		end = endLoc;
+		length = len;
+	}
+	
+	public FloorplanEdge(FloorplanLocation st, FloorplanLocation endLoc, 
+						 double len, double ang) {
+		start = st;
+		end = endLoc;
+		length = len;
+		angle = ang;
+	}
 
 	public FloorplanLocation getStart() {
 		return start;

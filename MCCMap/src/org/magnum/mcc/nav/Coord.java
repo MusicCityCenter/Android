@@ -9,7 +9,12 @@ package org.magnum.mcc.nav;
 public class Coord {
 	private int x;
 	private int y;
-
+	
+	public Coord(int xC, int yC) {
+		x = xC;
+		y = yC;
+	}
+	
 	public int getX() {
 		return x;
 	}

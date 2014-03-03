@@ -4,11 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <ImageView
+    <org.magnum.mcc.nav.MapImageView
        android:id="@+id/mapImageView"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:layout_gravity="center"
+       android:background="#000000"
+       android:scaleType="centerInside"
        android:contentDescription="@string/map_description" />    
 
 </LinearLayout>

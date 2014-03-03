@@ -12,6 +12,11 @@ public class FloorplanLocation {
 
 	public FloorplanLocation() {
 	}
+	
+	public FloorplanLocation(String locId, String locType) {
+		id = locId;
+		type = locType;
+	}
 
 	public String getId() {
 		return id;
