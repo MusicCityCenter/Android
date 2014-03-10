@@ -24,6 +24,7 @@ public class EventControllerImpl implements EventController {
 	/** Base URL from which relevant end-points can be accessed */
 	private String urlBase_;
 	
+	private String urlFull_;
 	/** The port on which the server is communicating */
 	private int port_;
 	
@@ -58,30 +59,33 @@ public class EventControllerImpl implements EventController {
 	@Override
 	public void getEventsOnDay(int month, int day, int year, EventsListener l) {		
 		
-		String path = host_ + "/mcc/events/full-test-1/on/" + month + "/" + day + "/"+ year;
+		urlFull_ = host_ + "/mcc/events/full-test-1/on/" + month + "/" + day + "/"+ year;
 		
-        new GetEventsAsyncTask().execute(path);
+        new GetEventsAsyncTask().execute(l);
 		
-		if(events_ != null) {
-			l.setEvents(events_);
-			Log.d(TAG, "events size:"+ events_.size());
-		}
+		
 		
 	}
 	
 	/** The AsyncTask responsible for retrieving the set of events */
 	private class GetEventsAsyncTask extends 
-		AsyncTask<String, Integer, List<Event>> {		
+		AsyncTask<EventsListener, Integer, List<Event>> {		
 		
 		@Override
-		protected List<Event> doInBackground(String... path) {			
+		protected List<Event> doInBackground(EventsListener... eListener) {			
 			List<Event> events = new ArrayList<Event>();
 			
 			try {
-				URL url = new URL(path[0]);
+				URL url = new URL(urlFull_);
 				ObjectMapper mapper = new ObjectMapper();
 				events = mapper.readValue(url, new TypeReference<List<Event>>(){});
-				//Log.d(TAG, "event from server:"+ events.get(0).getDescription());
+				if(events != null) {
+					eListener[0].setEvents(events);
+					Log.d(TAG, "events size:"+ events.size());
+					Log.d(TAG, "event from server:"+ events.get(0).getStartTime());
+				}
+				
+				
 			} 
 			catch (IOException e) {
 				Log.d(TAG, "IO Exception while forming/reading URL");

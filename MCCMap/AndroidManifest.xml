@@ -29,9 +29,9 @@
             android:name="org.magnum.mccmap.MainActivity"
    			      	
 	
-            android:label="@string/app_name" >
-            <!-- android:theme="@style/Theme.AppCompat.Light"
-                 I delete this statement because I can not finish repair R.java with this one inside manifest  --> 
+            android:label="@string/app_name" 
+            android:theme="@style/Theme.AppCompat.Light">
+             //    I delete this statement because I can not finish repair R.java with this one inside manifest  --> 
             
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
