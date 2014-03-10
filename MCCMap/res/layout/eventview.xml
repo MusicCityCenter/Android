@@ -9,7 +9,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/textView_detail"
             android:layout_width="228dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -17,7 +17,7 @@
             android:textSize="30sp" />
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/button_route1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Route" />
@@ -29,13 +29,13 @@
         android:layout_height="wrap_content" >
         
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/imageView_event1"
             android:layout_width="150dp"
             android:layout_height="150dp" 
             android:src="@drawable/ic_launcher" />
         
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textView_title1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -51,7 +51,7 @@
         </LinearLayout> -->
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView_description1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

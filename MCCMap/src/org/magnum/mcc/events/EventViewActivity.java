@@ -22,7 +22,6 @@ import org.json.JSONObject;
 import org.magnum.mcc.nav.MapRouteActivity;
 
 
-import android.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -146,13 +145,13 @@ public class EventViewActivity extends Activity {
 			e.printStackTrace();
 		}
 		
-		TextView text1=(TextView)this.findViewById(org.magnum.mccmap.R.id.textView2);
+		TextView text1=(TextView)this.findViewById(org.magnum.mccmap.R.id.textView_title1);
 		text1.setText(title);
 		text1.setGravity(Gravity.CENTER | Gravity.CENTER);
 		//there can also be some other parameters to set for this text
 		
 		
-		TextView text2=(TextView)this.findViewById(org.magnum.mccmap.R.id.textView3);
+		TextView text2=(TextView)this.findViewById(org.magnum.mccmap.R.id.textView_description1);
 		text2.setText(description);
 		text2.setGravity(Gravity.CENTER | Gravity.CENTER);
 		//there can also be some other parameters to set for this text
@@ -161,7 +160,7 @@ public class EventViewActivity extends Activity {
 		
 		
 		// button to jump to nav
-		Button button = (Button) this.findViewById(org.magnum.mccmap.R.id.button1);
+		Button button = (Button) this.findViewById(org.magnum.mccmap.R.id.button_route1);
 		button.setOnClickListener(new View.OnClickListener() {
 
 			@Override

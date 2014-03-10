@@ -11,6 +11,7 @@ import org.magnum.mcc.events.EventControllerImpl;
 import org.magnum.mcc.events.EventsListener;
 import org.magnum.mcc.nav.MapRouteActivity;
 
+import org.magnum.mccmap.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

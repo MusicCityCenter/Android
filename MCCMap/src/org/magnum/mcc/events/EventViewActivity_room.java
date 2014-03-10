@@ -23,7 +23,7 @@ import org.json.JSONObject;
 import org.magnum.mcc.nav.MapRouteActivity;
 
 
-import android.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -256,7 +256,7 @@ public class EventViewActivity_room extends Activity {
 		expandListView.setAdapter(adapter);
 		
 		//button to click-expand
-		Button button=(Button) this.findViewById(org.magnum.mccmap.R.id.button1);
+		Button button=(Button) this.findViewById(org.magnum.mccmap.R.id.button_route2);
 		button.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
