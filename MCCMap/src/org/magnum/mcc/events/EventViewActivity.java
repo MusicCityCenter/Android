@@ -22,8 +22,10 @@ import org.json.JSONObject;
 import org.magnum.mcc.nav.MapRouteActivity;
 
 
+
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -44,123 +46,161 @@ import android.widget.TextView;
 
 
 public class EventViewActivity extends Activity {
-	
-	String description;
-	String title;
-	
-	//a http connection to link webpage where JSON is stored
-	private String getContent(String url) throws Exception {
-		StringBuilder sb = new StringBuilder();
 
-		HttpClient client = new DefaultHttpClient();
-		HttpParams httpParams = client.getParams();
-		// set Timeout
-		HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
-		HttpConnectionParams.setSoTimeout(httpParams, 5000);
-		HttpResponse response = client.execute(new HttpGet(url));
-		HttpEntity entity = response.getEntity();
-		if (entity != null) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					entity.getContent(), "UTF-8"), 8192);
+	private EventController eventController_;
+	
+	
+	private String description;
+	private String title;
+	private TextView text1;
+	private TextView text2;
 
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
+	// asynctask to optimize network communication
+	private class Downloadjson extends AsyncTask<String, Integer, String> {
+
+		private String url_;
+		private String floorplanId_;
+		private String eventId_;
+		private String endId_;
+
+		@Override
+		protected String doInBackground(String... params) {
+			url_ = params[0];
+			floorplanId_ = params[1];
+			eventId_ = params[2];
+			endId_ = params[3];
+
+			try {
+				StringBuilder sb = new StringBuilder();
+				HttpClient client = new DefaultHttpClient();
+				HttpParams httpParams = client.getParams();
+				// set Timeout
+				HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
+				HttpConnectionParams.setSoTimeout(httpParams, 5000);
+				HttpResponse response = client.execute(new HttpGet(url_));
+				HttpEntity entity = response.getEntity();
+				if (entity != null) {
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(entity.getContent(), "UTF-8"),
+							8192);
+
+					String line = null;
+					while ((line = reader.readLine()) != null) {
+						sb.append(line + "\n");
+					}
+					reader.close();
+				}
+				return sb.toString();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			reader.close();
+
+			return null;
 		}
-		return sb.toString();
-	}
-	
-	
-	//change time to normal format
-	public String time(String t)
-	{
-		 int i = Integer.parseInt(t);
-		 int hour=i/60;
-		 int min=i-60*hour;
-		 String h=String.valueOf(hour);
-		 String m=String.valueOf(min);
-		 if(min==0)  m="00";
-		 if(min<10&&min>0)  m="0"+m;
-		 String time=h+":"+m;
-		 return time;	 
-	}
-	
-	//to initialize two text
-	private void initializeData(String url,String floorplanId,String eventId, String endId) throws Exception
-	{
-		
-		//what about endId£¿ In the example, there is no endId at the list of JSON
-		String body = getContent(url);
-		JSONArray array = new JSONArray(body);
-		for(int k = 0; k < array.length(); k++)
-		{
-			JSONObject obj = array.getJSONObject(k);
-			String id=obj.getString("id");
-			String floorplanid=obj.getString("floorplanId");
-			if(id.equals(floorplanId)&&floorplanid.equals(floorplanId))
-			{
-				String eventname="Name: "+obj.getString("name");
-				String room="Room: "+obj.getString("floorplanLocationId");
-				description="Description: "+obj.getString("description");
-				String day = obj.getString("day");
-				String month = obj.getString("month");
-				String year = obj.getString("year");
-				String starttime = obj.getString("startTime");
-				String endtime = obj.getString("endTime");
-				String time= year + "-" + month + "-" + day+"\n" +"From "+time(starttime) + " to " + time(endtime) + "\n";
-				title=eventname+"\n"+room+"\n"+time;
+
+		@Override
+		protected void onCancelled() {
+			// TODO Auto-generated method stub
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			// webbody = result;
+			try {
+				JSONArray array = new JSONArray(result);
+				for (int k = 0; k < array.length(); k++) {
+					JSONObject obj = array.getJSONObject(k);
+					String id = obj.getString("id");
+					String floorplanid = obj.getString("floorplanId");
+					if (id.equals(eventId_) && floorplanid.equals(floorplanId_)) // id.equals(floorplanId)&&floorplanid.equals(floorplanId)
+					{
+						String eventname = "Name: " + obj.getString("name");
+						String room = "Room: "
+								+ obj.getString("floorplanLocationId");
+						description = "Description: " + "\n"
+								+ obj.getString("description");
+						String day = obj.getString("day");
+						String month = obj.getString("month");
+						String year = obj.getString("year");
+						String starttime = obj.getString("startTime");
+						String endtime = obj.getString("endTime");
+						String time = year + "-" + month + "-" + day + "\n"
+								+ "From " + time(starttime) + " to "
+								+ time(endtime) + "\n";
+						title = eventname + "\n" + room + "\n" + time;
+					}
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+
+			text1.setText(title);
+			text1.setGravity(Gravity.CENTER | Gravity.CENTER);
+
+			text2.setText(description);
+			text2.setGravity(Gravity.CENTER | Gravity.CENTER);
 		}
+
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			// TODO Auto-generated method stub
+			super.onProgressUpdate(values);
+		}
+
 	}
-	
-	
-	
+
+	// change time to normal format
+	public String time(String t) {
+		int i = Integer.parseInt(t);
+		int hour = i / 60;
+		int min = i - 60 * hour;
+		String h = String.valueOf(hour);
+		String m = String.valueOf(min);
+		if (min == 0)
+			m = "00";
+		if (min < 10 && min > 0)
+			m = "0" + m;
+		String time = h + ":" + m;
+		return time;
+	}
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// Do stuff to setup the UI
 		setContentView(org.magnum.mccmap.R.layout.eventview);
-		
+		text1 = (TextView) this.findViewById(R.id.textView_title1);
+		text2 = (TextView) this.findViewById(R.id.textView_description1);
+
 		// Obtain the request path data
 		Intent i = getIntent();
 		final String floorplanId = i.getStringExtra("floorplanId");
 		final String eventId = i.getStringExtra("eventId");
 		final String endId = i.getStringExtra("endId");
-		
+
 		// This should probably be pulled from shared preferences
 		// but can be hardcoded to the MCC appengine server for now
 		String server = "http://0-1-dot-mcc-backend.appspot.com";
 		int port = 80;
 		String baseUrl = "/mcc/events/full-test-1/on/5/9/2014";
 		String url = server + baseUrl;
+
+		//eventController_= new EventControllerImpl(server, port, baseUrl);
 		
 		
-		try {
-			initializeData(url,floorplanId,eventId,endId);
-		} catch (Exception e) {
-			/** Someone should look at this! */
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		TextView text1=(TextView)this.findViewById(org.magnum.mccmap.R.id.textView_title1);
-		text1.setText(title);
-		text1.setGravity(Gravity.CENTER | Gravity.CENTER);
-		//there can also be some other parameters to set for this text
-		
-		
-		TextView text2=(TextView)this.findViewById(org.magnum.mccmap.R.id.textView_description1);
-		text2.setText(description);
-		text2.setGravity(Gravity.CENTER | Gravity.CENTER);
-		//there can also be some other parameters to set for this text
-		
-		
-		
-		
+		String[] parameter = { url, floorplanId, eventId, endId };
+		// String[] parameter =
+		// {url,"full-test-1","3157b10f-34be-4761-8dfa-c7bbf5444ffd", endId};
+
+		Downloadjson task = new Downloadjson();
+		task.execute(parameter);
+
 		// button to jump to nav
-		Button button = (Button) this.findViewById(org.magnum.mccmap.R.id.button_route1);
+		Button button = (Button) this
+				.findViewById(org.magnum.mccmap.R.id.button_route1);
 		button.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -168,8 +208,11 @@ public class EventViewActivity extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(EventViewActivity.this,
 						MapRouteActivity.class);
+				intent.putExtra("floorplanId", floorplanId);
+				intent.putExtra("startId", value); // value should be current
+													// location
+				intent.putExtra("endId", endId);
 				startActivity(intent);
-				// if we need to put some data into this intent, add here.
 			}
 		});
 	}

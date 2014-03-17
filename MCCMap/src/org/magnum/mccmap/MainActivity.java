@@ -8,14 +8,15 @@ import java.util.List;
 import org.magnum.mcc.events.Event;
 import org.magnum.mcc.events.EventController;
 import org.magnum.mcc.events.EventControllerImpl;
-import org.magnum.mcc.events.EventViewActivity;
 import org.magnum.mcc.events.EventsListener;
 import org.magnum.mcc.nav.MapRouteActivity;
 
+import org.magnum.mccmap.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -151,7 +152,7 @@ public class MainActivity extends Activity {
 			map_list = new HashMap<String, String>();
 			map_list.put(columnName[0], e.getName());
 			map_list.put(columnName[1], e.getDescription());
-			map_list.put(columnName[2], formatTime(e.getStartTime()) + "-"+ formatTime(e.getEndTime()));
+			map_list.put(columnName[2], e.getStartTime() + "-"+ e.getEndTime());
 
 			listContent.add(map_list);
 		}
@@ -166,11 +167,7 @@ public class MainActivity extends Activity {
 		}
 		
 	}
-    private String formatTime(long time){
-    	long m = time%100;
-    	time = (time-m)/100;
-    	return time+":"+ m;
-    }
+    
     private void updateSearchBoxPossibilities(){
     	//Do anything that you need to do UI-wise
     	//now that the list of possible events has been retrieved from the
@@ -202,8 +199,7 @@ public class MainActivity extends Activity {
             	Intent i3= new Intent(MainActivity.this,RestaurantActivity.class);
 				startActivity(i3);
             case R.id.action_setting:
-            	Intent i4= new Intent(MainActivity.this,EventViewActivity.class);
-				startActivity(i4);
+                
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

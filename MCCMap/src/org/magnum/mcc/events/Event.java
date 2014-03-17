@@ -14,12 +14,12 @@ public class Event {
 	private String id;	
 	private String name;
 	private String description;
-	private int day;
-	private int month;
-	private int year;
-	private long startTime;
+	private String day;
+	private String month;
+	private String year;
+	private String startTime;
 
-	private long endTime;
+	private String endTime;
 
 	private String floorplanId;
 
@@ -57,43 +57,43 @@ public class Event {
 		this.floorplanLocationId = floorplanLocationId;
 	}
 
-	public int getDay() {
+	public String getDay() {
 		return day;
 	}
 
-	public void setDay(int day) {
+	public void setDay(String day) {
 		this.day = day;
 	}
 
-	public int getMonth() {
+	public String getMonth() {
 		return month;
 	}
 
-	public void setMonth(int month) {
+	public void setMonth(String month) {
 		this.month = month;
 	}
 
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
 
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
 
-	public long getStartTime() {
+	public String getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(long startTime) {
+	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
 
-	public long getEndTime() {
+	public String getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(long endTime) {
+	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
 

@@ -8,12 +8,27 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
-
+    
+	<ListView
+	    android:id="@+id/listView_head"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignTop="@+id/listView_eventToday"
+	    android:background="@android:color/holo_green_dark" >
+    </ListView>
+    <ListView
+        android:id="@+id/listView_eventToday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" >
+    </ListView>
+    
     <EditText
         android:id="@+id/editText_searchBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       
+        android:layout_alignLeft="@+id/listView_eventToday"
         android:layout_alignParentTop="true"
         android:layout_marginTop="21dp"
         android:ems="10" />
@@ -22,25 +37,11 @@
         android:id="@+id/button_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_alignRight="@+id/editText_searchBox"      
+        android:layout_alignBottom="@+id/editText_searchBox"
+        android:layout_alignRight="@+id/listView_eventToday"
         android:layout_weight="1"
         android:text="search" />
 
-    <ListView
-        android:id="@+id/listView_head"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_below="@+id/editText_searchBox"
-        android:layout_marginTop="26dp"
-        android:background="@android:color/holo_green_dark" >
-    </ListView>
-
-    <ListView
-        android:id="@+id/listView_eventToday"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_below="@+id/listView_head" >
-    </ListView>
+  
 
 </RelativeLayout>
