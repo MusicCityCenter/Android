@@ -27,6 +27,8 @@ public class MapImageView extends ImageView implements OnTouchListener {
 	private List<Coord> drawPath_ = null;
 	private Paint linePaint_;
 	
+	private boolean firstLoad_ = true;
+	
 	private Matrix matrix = new Matrix();
     private Matrix savedMatrix = new Matrix();
 
@@ -54,8 +56,10 @@ public class MapImageView extends ImageView implements OnTouchListener {
     private boolean mDraggable = true;
     
     private static int PICTURE_WIDTH = 2275;
+    private static float PICTURE_WIDTH_CORRECTION = (float)(PICTURE_WIDTH*.087);
     private static int PICTURE_HEIGHT = 3829;
     private Coord lastCoord_;
+    
 
 	public MapImageView(Context context) {
 		super(context);
@@ -90,10 +94,11 @@ public class MapImageView extends ImageView implements OnTouchListener {
  		if(drawPath_ != null) {
  			lastCoord_ = drawPath_.get(0);
 			for(Coord c : drawPath_) {
-				canvas.drawLine(lastCoord_.getX()*widthScale+198, lastCoord_.getY()*heightScale,
-								c.getX()*widthScale+198, c.getY()*heightScale, linePaint_);
+				canvas.drawLine(lastCoord_.getX()*widthScale+PICTURE_WIDTH_CORRECTION, 
+								lastCoord_.getY()*heightScale,
+								c.getX()*widthScale+PICTURE_WIDTH_CORRECTION, 
+								c.getY()*heightScale, linePaint_);
 				lastCoord_ = c;
-				Log.d(TAG, c.getX() + " " + c.getY());
 			}
 		}
 	}
