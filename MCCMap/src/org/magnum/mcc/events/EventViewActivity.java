@@ -17,19 +17,19 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.magnum.mcc.nav.MapRouteActivity;
-
-
+import org.magnum.mccmap.R;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 //Work Item 3
@@ -50,11 +50,20 @@ public class EventViewActivity extends Activity {
 	private EventController eventController_;
 	
 	
-	private String description;
-	private String title;
-	private TextView text1;
-	private TextView text2;
-
+	private String eventDescription;
+	private String eventName;
+	private String eventTime;
+	private String eventLocation;
+	
+	private TextView text_title;
+	private TextView text_descript;
+	private TextView text_time;
+	private TextView text_location;
+	private ImageView eventPhoto;
+	private String floorplanId;
+	private String endId;
+	private String eventId;
+	
 	// asynctask to optimize network communication
 	private class Downloadjson extends AsyncTask<String, Integer, String> {
 
@@ -90,6 +99,7 @@ public class EventViewActivity extends Activity {
 					}
 					reader.close();
 				}
+				Log.d("EventDetail", "EventDetail:"+ sb.toString());
 				return sb.toString();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -116,20 +126,18 @@ public class EventViewActivity extends Activity {
 					String floorplanid = obj.getString("floorplanId");
 					if (id.equals(eventId_) && floorplanid.equals(floorplanId_)) // id.equals(floorplanId)&&floorplanid.equals(floorplanId)
 					{
-						String eventname = "Name: " + obj.getString("name");
-						String room = "Room: "
-								+ obj.getString("floorplanLocationId");
-						description = "Description: " + "\n"
-								+ obj.getString("description");
+						eventName = obj.getString("name");
+						eventLocation = obj.getString("floorplanLocationId");
+						eventDescription = obj.getString("description");
 						String day = obj.getString("day");
 						String month = obj.getString("month");
 						String year = obj.getString("year");
 						String starttime = obj.getString("startTime");
 						String endtime = obj.getString("endTime");
-						String time = year + "-" + month + "-" + day + "\n"
+						eventTime = year + "-" + month + "-" + day + "\n"
 								+ "From " + time(starttime) + " to "
 								+ time(endtime) + "\n";
-						title = eventname + "\n" + room + "\n" + time;
+						
 					}
 				}
 			} catch (Exception e) {
@@ -137,11 +145,12 @@ public class EventViewActivity extends Activity {
 				e.printStackTrace();
 			}
 
-			text1.setText(title);
-			text1.setGravity(Gravity.CENTER | Gravity.CENTER);
-
-			text2.setText(description);
-			text2.setGravity(Gravity.CENTER | Gravity.CENTER);
+			text_title.setText(eventName);
+		
+			text_descript.setText(eventDescription);
+	
+			text_time.setText(eventTime);
+			text_location.setText(eventLocation);
 		}
 
 		@Override
@@ -172,14 +181,16 @@ public class EventViewActivity extends Activity {
 
 		// Do stuff to setup the UI
 		setContentView(org.magnum.mccmap.R.layout.eventview);
-		text1 = (TextView) this.findViewById(R.id.textView_title1);
-		text2 = (TextView) this.findViewById(R.id.textView_description1);
+		text_title = (TextView) this.findViewById(R.id.title_text);
+		text_descript = (TextView) this.findViewById(R.id.text_description);
+		text_time = (TextView) this.findViewById(R.id.textView_time);
+		text_location = (TextView) this.findViewById(R.id.textView_location);
 
 		// Obtain the request path data
-		Intent i = getIntent();
-		final String floorplanId = i.getStringExtra("floorplanId");
-		final String eventId = i.getStringExtra("eventId");
-		final String endId = i.getStringExtra("endId");
+//		Intent i = getIntent();
+//		floorplanId = i.getStringExtra("floorplanId");
+//		String eventId = i.getStringExtra("eventId");
+//		endId = i.getStringExtra("endId");
 
 		// This should probably be pulled from shared preferences
 		// but can be hardcoded to the MCC appengine server for now
@@ -191,29 +202,34 @@ public class EventViewActivity extends Activity {
 		//eventController_= new EventControllerImpl(server, port, baseUrl);
 		
 		
-		String[] parameter = { url, floorplanId, eventId, endId };
-		// String[] parameter =
-		// {url,"full-test-1","3157b10f-34be-4761-8dfa-c7bbf5444ffd", endId};
+		// String[] parameter = { url, floorplanId, eventId, endId };
+		floorplanId = "full-test-1";
+		eventId = "3157b10f-34be-4761-8dfa-c7bbf5444ffd";
+		 String[] parameter =
+		 {url,"full-test-1","3157b10f-34be-4761-8dfa-c7bbf5444ffd", endId};
 
 		Downloadjson task = new Downloadjson();
 		task.execute(parameter);
 
 		// button to jump to nav
 		Button button = (Button) this
-				.findViewById(org.magnum.mccmap.R.id.button_route1);
+				.findViewById(org.magnum.mccmap.R.id.button_route);
 		button.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(EventViewActivity.this,
-						MapRouteActivity.class);
-				intent.putExtra("floorplanId", floorplanId);
-				intent.putExtra("startId", value); // value should be current
-													// location
-				intent.putExtra("endId", endId);
-				startActivity(intent);
+				startMapRoute();
 			}
 		});
+	}
+	private void startMapRoute(){
+		Intent intent = new Intent(EventViewActivity.this,
+				MapRouteActivity.class);
+		intent.putExtra("floorplanId", floorplanId);
+	//	intent.putExtra("startId", value); // value should be current
+											// location
+		intent.putExtra("endId", endId);
+		startActivity(intent);
 	}
 }

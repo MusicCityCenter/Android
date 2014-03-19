@@ -8,15 +8,14 @@ import java.util.List;
 import org.magnum.mcc.events.Event;
 import org.magnum.mcc.events.EventController;
 import org.magnum.mcc.events.EventControllerImpl;
+import org.magnum.mcc.events.EventViewActivity;
 import org.magnum.mcc.events.EventsListener;
 import org.magnum.mcc.nav.MapRouteActivity;
 
-import org.magnum.mccmap.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -196,7 +195,7 @@ public class MainActivity extends Activity {
             case R.id.action_event_calendar:
                 
             case R.id.action_restaurant:
-            	Intent i3= new Intent(MainActivity.this,RestaurantActivity.class);
+            	Intent i3= new Intent(MainActivity.this,EventViewActivity.class);
 				startActivity(i3);
             case R.id.action_setting:
                 
