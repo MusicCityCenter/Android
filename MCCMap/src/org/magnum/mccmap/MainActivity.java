@@ -9,6 +9,7 @@ import org.magnum.mcc.events.Event;
 import org.magnum.mcc.events.EventController;
 import org.magnum.mcc.events.EventControllerImpl;
 import org.magnum.mcc.events.EventViewActivity;
+import org.magnum.mcc.events.EventViewActivity_room;
 import org.magnum.mcc.events.EventsListener;
 import org.magnum.mcc.nav.MapRouteActivity;
 
@@ -192,9 +193,11 @@ public class MainActivity extends Activity {
             	i1.putExtra("endId", "S-1m-1");
 				startActivity(i1);
                 return true;
-            case R.id.action_event_calendar:
-                
-            case R.id.action_restaurant:
+            case R.id.action_eventlist:
+            	Intent i2= new Intent(MainActivity.this,EventViewActivity_room.class);
+				startActivity(i2);
+				
+            case R.id.action_event_detail:
 
             	Intent i3= new Intent(MainActivity.this,EventViewActivity.class);
 
