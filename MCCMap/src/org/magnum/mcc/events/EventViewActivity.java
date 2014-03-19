@@ -189,26 +189,30 @@ public class EventViewActivity extends Activity {
 
 
 		// Obtain the request path data
-//		Intent i = getIntent();
-//		floorplanId = i.getStringExtra("floorplanId");
-//		String eventId = i.getStringExtra("eventId");
-//		endId = i.getStringExtra("endId");
+		Intent i = getIntent();
+		final String floorplanId = i.getStringExtra("floorplanId");
+		final String eventId = i.getStringExtra("eventId");
+		final String endId = i.getStringExtra("endId");
+		final String day = i.getStringExtra("day");
+		final String month = i.getStringExtra("month");
+		final String year = i.getStringExtra("year");
 
 		// This should probably be pulled from shared preferences
 		// but can be hardcoded to the MCC appengine server for now
 		String server = "http://0-1-dot-mcc-backend.appspot.com";
 		int port = 80;
-		String baseUrl = "/mcc/events/full-test-1/on/5/9/2014";
+		String baseUrl = "/mcc/events/full-test-1/on/" + day + "/" + month
+				+ "/" + year;
 		String url = server + baseUrl;
 
 		//eventController_= new EventControllerImpl(server, port, baseUrl);
 		
 		
-		// String[] parameter = { url, floorplanId, eventId, endId };
-		floorplanId = "full-test-1";
-		eventId = "3157b10f-34be-4761-8dfa-c7bbf5444ffd";
-		 String[] parameter =
-		 {url,"full-test-1","3157b10f-34be-4761-8dfa-c7bbf5444ffd", endId};
+		String[] parameter = { url, floorplanId, eventId, endId };
+		//floorplanId = "full-test-1";
+		//eventId = "3157b10f-34be-4761-8dfa-c7bbf5444ffd";
+		// String[] parameter =
+		// {url,"full-test-1","3157b10f-34be-4761-8dfa-c7bbf5444ffd", endId};
 
 		Downloadjson task = new Downloadjson();
 		task.execute(parameter);

@@ -11,6 +11,7 @@ import org.magnum.mcc.events.EventControllerImpl;
 import org.magnum.mcc.events.EventViewActivity;
 import org.magnum.mcc.events.EventViewActivity_room;
 import org.magnum.mcc.events.EventsListener;
+import org.magnum.mcc.events.tempList;
 import org.magnum.mcc.nav.MapRouteActivity;
 
 import android.app.Activity;
@@ -199,7 +200,7 @@ public class MainActivity extends Activity {
 				
             case R.id.action_event_detail:
 
-            	Intent i3= new Intent(MainActivity.this,EventViewActivity.class);
+            	Intent i3= new Intent(MainActivity.this,tempList.class);
 
 //            	Intent i3= new Intent(MainActivity.this, EventViewActivity.class);
 //            	i3.putExtra("floorplanId", "full-test-1");

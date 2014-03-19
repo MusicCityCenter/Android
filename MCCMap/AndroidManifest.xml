@@ -45,8 +45,11 @@
         <activity android:name="org.magnum.mcc.events.EventViewActivity"></activity>
         <activity android:name="org.magnum.mcc.events.EventViewActivity_room"></activity>
         <activity android:name="org.magnum.mcc.nav.MapRouteActivity"
-            	  android:theme="@android:style/Theme.Black.NoTitleBar" />      
-        
+            	  android:theme="@android:style/Theme.Black.NoTitleBar" />   
+        <activity android:name="org.magnum.mcc.events.tempList"></activity>
+        <activity android:name="org.magnum.mcc.events.EventListforDate"></activity>
+        <activity android:name="org.magnum.mcc.events.EventListforRoom"></activity>m
+              
         <!--  
  	    <meta-data
     		android:name="com.google.android.gms.version"
