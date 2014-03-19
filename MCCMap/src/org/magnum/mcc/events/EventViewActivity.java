@@ -181,10 +181,12 @@ public class EventViewActivity extends Activity {
 
 		// Do stuff to setup the UI
 		setContentView(org.magnum.mccmap.R.layout.eventview);
+
 		text_title = (TextView) this.findViewById(R.id.title_text);
 		text_descript = (TextView) this.findViewById(R.id.text_description);
 		text_time = (TextView) this.findViewById(R.id.textView_time);
 		text_location = (TextView) this.findViewById(R.id.textView_location);
+
 
 		// Obtain the request path data
 //		Intent i = getIntent();
@@ -219,7 +221,17 @@ public class EventViewActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+
 				startMapRoute();
+
+				Intent intent = new Intent(EventViewActivity.this,
+						MapRouteActivity.class);
+				intent.putExtra("floorplanId", floorplanId);
+				intent.putExtra("startId", "C-1-2"); // value should be current
+													// location
+				intent.putExtra("endId", endId);
+				startActivity(intent);
+
 			}
 		});
 	}
