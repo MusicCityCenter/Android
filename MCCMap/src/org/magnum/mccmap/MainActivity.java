@@ -195,14 +195,14 @@ public class MainActivity extends Activity {
             case R.id.action_event_calendar:
                 
             case R.id.action_restaurant:
-<<<<<<< HEAD
+
             	Intent i3= new Intent(MainActivity.this,EventViewActivity.class);
-=======
-            	Intent i3= new Intent(MainActivity.this, EventViewActivity.class);
-            	i3.putExtra("floorplanId", "full-test-1");
-            	i3.putExtra("startId", "B-1-3");
-            	i3.putExtra("endId", "S-1m-1");
->>>>>>> 050f9b931c16fd737b205bc8123b7aa66eb5bda6
+
+//            	Intent i3= new Intent(MainActivity.this, EventViewActivity.class);
+//            	i3.putExtra("floorplanId", "full-test-1");
+//            	i3.putExtra("startId", "B-1-3");
+//            	i3.putExtra("endId", "S-1m-1");
+
 				startActivity(i3);
             case R.id.action_setting:
                 
