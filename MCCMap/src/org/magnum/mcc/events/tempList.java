@@ -27,7 +27,7 @@ public class tempList extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(tempList.this,
-						EventListforDate.class);
+						EventListforDateActivity.class);
 				intent.putExtra("day", "3");
 				intent.putExtra("month", "19");
 				intent.putExtra("year", "2014");
@@ -41,7 +41,7 @@ public class tempList extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(tempList.this,
-						EventListforRoom.class);
+						EventListforRoomActivity.class);
 				intent.putExtra("day", "3");
 				intent.putExtra("month", "19");
 				intent.putExtra("year", "2014");

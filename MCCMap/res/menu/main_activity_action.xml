@@ -8,12 +8,12 @@
         android:id="@+id/action_eventlist"
         android:orderInCategory="100"
         android:showAsAction="always|withText"
-        android:title="EventList"/>
+        android:title="Event"/>
     <item
-        android:id="@+id/action_event_detail"
+        android:id="@+id/action_about"
         android:orderInCategory="100"
         android:showAsAction="always|withText"
-        android:title="EventDetail"/>
+        android:title="About"/>
     <item
         android:id="@+id/action_setting"
         android:orderInCategory="100"

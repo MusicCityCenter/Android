@@ -14,19 +14,47 @@
             android:gravity="center"
             android:text="Today Events"
             android:textSize="30sp" />
+    </LinearLayout>
 
-        <Button
-            android:id="@+id/button1"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+		<RadioGroup android:id="@+id/toggleGroup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+            >
+        <ToggleButton
+            android:id="@+id/toggleButton_nearme"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="route" />
+            android:layout_height="wrap_content"
+            android:onClick="onToggle"
+            android:textOn="Near Me"
+            android:textOff="Near Me" />
 
+        <ToggleButton
+            android:id="@+id/toggleButton_soon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onToggle"
+            android:textOn="Soon"
+            android:textOff="Soon" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onToggle"
+            android:textOn="All"
+            android:textOff="All"/>
+	</RadioGroup>
     </LinearLayout>
 
     <ListView
-        android:id="@+id/listview1"
+        android:id="@+id/listview_eventlist_today"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="356dp" >
     </ListView>
 
 </LinearLayout>

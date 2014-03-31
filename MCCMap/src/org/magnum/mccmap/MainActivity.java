@@ -8,8 +8,7 @@ import java.util.List;
 import org.magnum.mcc.events.Event;
 import org.magnum.mcc.events.EventController;
 import org.magnum.mcc.events.EventControllerImpl;
-import org.magnum.mcc.events.EventViewActivity;
-import org.magnum.mcc.events.EventViewActivity_room;
+import org.magnum.mcc.events.EventListforDateActivity;
 import org.magnum.mcc.events.EventsListener;
 import org.magnum.mcc.events.tempList;
 import org.magnum.mcc.nav.MapRouteActivity;
@@ -27,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
 
 // Work Item 5
 /**
@@ -195,21 +195,26 @@ public class MainActivity extends Activity {
 				startActivity(i1);
                 return true;
             case R.id.action_eventlist:
-            	Intent i2= new Intent(MainActivity.this,EventViewActivity_room.class);
-				startActivity(i2);
-				
-            case R.id.action_event_detail:
-
-            	Intent i3= new Intent(MainActivity.this,tempList.class);
-
-//            	Intent i3= new Intent(MainActivity.this, EventViewActivity.class);
-//            	i3.putExtra("floorplanId", "full-test-1");
-//            	i3.putExtra("startId", "B-1-3");
-//            	i3.putExtra("endId", "S-1m-1");
-
-				startActivity(i3);
-            case R.id.action_setting:
+            	Intent i2= new Intent(MainActivity.this,EventListforDateActivity.class);
+            	// Update to calculate the current day/month
+        		Calendar calendar = Calendar.getInstance();
+                String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                //In Calendar, January is represented by constant 0
+                String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                String year = String.valueOf(calendar.get(Calendar.YEAR));
                 
+                i2.putExtra("day", "19");
+				i2.putExtra("month", "3");
+				i2.putExtra("year", year);
+				startActivity(i2);
+				return true;
+            case R.id.action_about:
+            	Intent i3= new Intent(MainActivity.this,AboutActivity.class);
+            	startActivity(i3);
+            	return true;
+            case R.id.action_setting:
+            	Intent i4= new Intent(MainActivity.this,tempList.class);
+            	startActivity(i4);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

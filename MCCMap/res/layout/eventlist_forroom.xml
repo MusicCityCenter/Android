@@ -15,12 +15,6 @@
             android:text="Room 101"
             android:textSize="30sp" />
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="route" />
-
     </LinearLayout>
 
     <ListView
