@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -121,10 +120,12 @@ public class EventDetailActivity extends Activity {
 			try {
 				JSONArray array = new JSONArray(result);
 				for (int k = 0; k < array.length(); k++) {
+					
 					JSONObject obj = array.getJSONObject(k);
 					String id = obj.getString("id");
 					String floorplanid = obj.getString("floorplanId");
-					if (id.equals(eventId_) && floorplanid.equals(floorplanId_)) // id.equals(floorplanId)&&floorplanid.equals(floorplanId)
+					
+					if (id.equals(eventId_) ) // id.equals(floorplanId)&&floorplanid.equals(floorplanId)
 					{
 						eventName = obj.getString("name");
 						eventLocation = obj.getString("floorplanLocationId");
@@ -144,7 +145,7 @@ public class EventDetailActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
+			
 			text_title.setText(eventName);
 		
 			text_descript.setText(eventDescription);
@@ -190,9 +191,9 @@ public class EventDetailActivity extends Activity {
 
 		// Obtain the request path data
 		Intent i = getIntent();
-		final String floorplanId = i.getStringExtra("floorplanId");
-		final String eventId = i.getStringExtra("eventId");
-		final String endId = i.getStringExtra("endId");
+		floorplanId = i.getStringExtra("floorplanId");
+		eventId = i.getStringExtra("eventId");
+		endId = i.getStringExtra("endId");
 		final String day = i.getStringExtra("day");
 		final String month = i.getStringExtra("month");
 		final String year = i.getStringExtra("year");
@@ -201,7 +202,7 @@ public class EventDetailActivity extends Activity {
 		// but can be hardcoded to the MCC appengine server for now
 		String server = "http://0-1-dot-mcc-backend.appspot.com";
 		int port = 80;
-		String baseUrl = "/mcc/events/full-test-1/on/" + day + "/" + month
+		String baseUrl = "/mcc/events/full-test-1/on/" + month + "/" + day
 				+ "/" + year;
 		String url = server + baseUrl;
 
@@ -224,18 +225,7 @@ public class EventDetailActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
 				startMapRoute();
-
-				Intent intent = new Intent(EventDetailActivity.this,
-						MapRouteActivity.class);
-				intent.putExtra("floorplanId", floorplanId);
-				intent.putExtra("startId", "C-1-2"); // value should be current
-													// location
-				intent.putExtra("endId", endId);
-				startActivity(intent);
-
 			}
 		});
 	}
@@ -243,7 +233,7 @@ public class EventDetailActivity extends Activity {
 		Intent intent = new Intent(EventDetailActivity.this,
 				MapRouteActivity.class);
 		intent.putExtra("floorplanId", floorplanId);
-	//	intent.putExtra("startId", value); // value should be current
+		intent.putExtra("startId", "C-1-2"); // value should be current
 											// location
 		intent.putExtra("endId", endId);
 		startActivity(intent);

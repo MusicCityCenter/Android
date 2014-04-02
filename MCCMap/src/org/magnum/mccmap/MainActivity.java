@@ -10,10 +10,11 @@ import org.magnum.mcc.events.EventController;
 import org.magnum.mcc.events.EventControllerImpl;
 import org.magnum.mcc.events.EventListforDateActivity;
 import org.magnum.mcc.events.EventsListener;
-import org.magnum.mcc.events.tempList;
 import org.magnum.mcc.nav.MapRouteActivity;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 
 
@@ -180,6 +182,15 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_activity_action, menu);
+        
+//     // Get the SearchView and set the searchable configuration
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+//        // Assumes current activity is the searchable activity
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+
+        
         return true;
     }
     
@@ -213,8 +224,7 @@ public class MainActivity extends Activity {
             	startActivity(i3);
             	return true;
             case R.id.action_setting:
-            	Intent i4= new Intent(MainActivity.this,tempList.class);
-            	startActivity(i4);
+            	
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
