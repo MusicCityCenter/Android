@@ -9,7 +9,7 @@ import org.magnum.mcc.events.Event;
 import org.magnum.mcc.events.EventController;
 import org.magnum.mcc.events.EventControllerImpl;
 import org.magnum.mcc.events.EventListforDateActivity;
-import org.magnum.mcc.events.EventListfortheredays;
+import org.magnum.mcc.events.EventListforthreedays;
 import org.magnum.mcc.events.EventsListener;
 import org.magnum.mcc.nav.MapRouteActivity;
 
@@ -209,7 +209,7 @@ public class MainActivity extends Activity {
 				startActivity(i1);
                 return true;
             case R.id.action_eventlist:
-            	Intent i2= new Intent(MainActivity.this,EventListfortheredays.class);
+            	Intent i2= new Intent(MainActivity.this,EventListforthreedays.class);
             	// Update to calculate the current day/month
         		Calendar calendar = Calendar.getInstance();
                 String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));

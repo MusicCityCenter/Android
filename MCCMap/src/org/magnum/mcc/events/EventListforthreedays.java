@@ -1,7 +1,9 @@
 package org.magnum.mcc.events;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,8 +19,10 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.magnum.mccmap.R;
+
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,13 +31,18 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class EventListfortheredays extends Activity {
+public class EventListforthreedays extends Activity {
+	/** Used for debugging */
+	private final String TAG = this.getClass().getSimpleName();
 
 	private EventController eventController_;
 	private EventsListener l;
@@ -41,10 +50,7 @@ public class EventListfortheredays extends Activity {
 	private String year;
 	private String month;
 	private String day;
-	/*
-	 * for test,set year 2014, month 5, day 9
-	 */
-	
+
 	/** Called when the activity is first created. */
 	private ViewPager mViewPager;
 	private PagerTitleStrip mPagerTitleStrip;
@@ -54,15 +60,24 @@ public class EventListfortheredays extends Activity {
 	private ListView listviewYestoday;
 
 	private JSONArray array;
-	private ListView listview;
 	private List<String> eventnametoday = new ArrayList<String>();
 	private List<String> eventnameyesterday = new ArrayList<String>();
 	private List<String> eventnametomorrow = new ArrayList<String>();
+
+	private List<Event> eventlisttoday = new ArrayList<Event>();
+	private List<Event> eventlistyesterday = new ArrayList<Event>();
+	private List<Event> eventlisttomorrow = new ArrayList<Event>();
 
 	private int starthour;
 	private int startmin;
 	private int endhour;
 	private int endmin;
+
+	private String formatEventDescriptor(Event e) {
+		return (e.getName() + "\n" + e.getYear() + "-" + e.getMonth() + "-"
+				+ e.getDay() + " From " + time(e.getStartTime()) + " to " + time(e
+					.getEndTime()));
+	}
 
 	// change time to normal format
 	public String time(String t) {
@@ -79,6 +94,7 @@ public class EventListfortheredays extends Activity {
 		return time;
 	}
 
+	//to use for comparing time
 	public int valueoftime(String t) {
 		int i = Integer.parseInt(t);
 		int h = i / 60;
@@ -86,6 +102,7 @@ public class EventListfortheredays extends Activity {
 		return h * 60 + m;
 	}
 
+	//set the date of today
 	private void getToday() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date date = new Date();
@@ -103,6 +120,7 @@ public class EventListfortheredays extends Activity {
 		}
 	}
 
+	// get the url where yesterday's events store
 	private String urlyesterday(String server) {
 		String d, m, y;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -129,6 +147,7 @@ public class EventListfortheredays extends Activity {
 		return url;
 	}
 
+	// get the url where tomorrow's events store
 	private String urltomorrow(String server) {
 		String d, m, y;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -155,12 +174,26 @@ public class EventListfortheredays extends Activity {
 		return url;
 	}
 
-	private class Downloadjsontoday extends AsyncTask<String, Integer, String> {
+	private Event jsontoevent(JSONObject obj) throws JSONException {
+		Event e = new Event();
+		e.setId(obj.getString("id"));
+		e.setName(obj.getString("name"));
+		e.setDescription(obj.getString("description"));
+		e.setDay(obj.getString("day"));
+		e.setMonth(obj.getString("month"));
+		e.setYear(obj.getString("year"));
+		e.setEndTime(obj.getString("endTime"));
+		e.setStartTime(obj.getString("startTime"));
+		e.setFloorplanId(obj.getString("floorplanId"));
+		e.setFloorplanLocationId(obj.getString("floorplanLocationId"));
+		return e;
+	}
 
+	private class Downloadjsontoday extends AsyncTask<String, Integer, String> {
 		@Override
 		protected String doInBackground(String... params) {
 			try {
-				System.out.println("start connect");
+				Log.d(TAG, "start connect");
 				StringBuilder sb = new StringBuilder();
 				HttpClient client = new DefaultHttpClient();
 				HttpParams httpParams = client.getParams();
@@ -184,45 +217,34 @@ public class EventListfortheredays extends Activity {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
 			try {
-				//
-				// String body=getContent(url);
-				System.out.println("connect ends");
+				Log.d(null, "connect ends");
 				array = new JSONArray(result);
 				for (int i1 = 0; i1 < array.length(); i1++) {
 					JSONObject obj = array.getJSONObject(i1);
-					String name = obj.getString("name");
-					String description = obj.getString("description");
-					String day = obj.getString("day");
-					String month = obj.getString("month");
-					String year = obj.getString("year");
 					String startTime = obj.getString("startTime");
 					String endTime = obj.getString("endTime");
+					Event e = jsontoevent(obj);
+					eventlisttoday.add(e);
 					if (starthour == -1) {
-						eventnametoday.add(name + "\n" + year + "-" + month
-								+ "-" + day + "  From " + time(startTime)
-								+ " to " + time(endTime));
+						eventnametoday.add(formatEventDescriptor(e));
 					} else {
 						if (valueoftime(startTime) >= starthour * 60 + startmin
 								&& valueoftime(endTime) <= endhour * 60
 										+ endmin) {
-							eventnametoday.add(name + "\n" + year + "-" + month
-									+ "-" + day + "  From " + time(startTime)
-									+ " to " + time(endTime));
+							eventnametoday.add(formatEventDescriptor(e));
 						}
 					}
-
 				}
 			} catch (Exception e) {
 			}
 			listviewToday.setAdapter(new ArrayAdapter<String>(
-					EventListfortheredays.this,
+					EventListforthreedays.this,
 					android.R.layout.simple_list_item_1, eventnametoday));
 		}
 	}
@@ -233,7 +255,7 @@ public class EventListfortheredays extends Activity {
 		@Override
 		protected String doInBackground(String... params) {
 			try {
-				System.out.println("start connect");
+				Log.d(null, "start connect");
 				StringBuilder sb = new StringBuilder();
 				HttpClient client = new DefaultHttpClient();
 				HttpParams httpParams = client.getParams();
@@ -264,40 +286,28 @@ public class EventListfortheredays extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			try {
-				//
-				// String body=getContent(url);
-				System.out.println("connect ends");
+				Log.d(null, "connect ends");
 				array = new JSONArray(result);
 				for (int i1 = 0; i1 < array.length(); i1++) {
 					JSONObject obj = array.getJSONObject(i1);
-					String name = obj.getString("name");
-					String description = obj.getString("description");
-					String day = obj.getString("day");
-					String month = obj.getString("month");
-					String year = obj.getString("year");
 					String startTime = obj.getString("startTime");
 					String endTime = obj.getString("endTime");
-					//eventnameyesterday.add(name + "\n" + year + "-" + month
-					//		+ "-" + day + "  From " + time(startTime) + " to "
-					//		+ time(endTime));
+					Event e = jsontoevent(obj);
+					eventlistyesterday.add(e);
 					if (starthour == -1) {
-						eventnameyesterday.add(name + "\n" + year + "-" + month
-								+ "-" + day + "  From " + time(startTime)
-								+ " to " + time(endTime));
+						eventnameyesterday.add(formatEventDescriptor(e));
 					} else {
 						if (valueoftime(startTime) >= starthour * 60 + startmin
 								&& valueoftime(endTime) <= endhour * 60
 										+ endmin) {
-							eventnameyesterday.add(name + "\n" + year + "-" + month
-									+ "-" + day + "  From " + time(startTime)
-									+ " to " + time(endTime));
+							eventnameyesterday.add(formatEventDescriptor(e));
 						}
 					}
 				}
 			} catch (Exception e) {
 			}
 			listviewYestoday.setAdapter(new ArrayAdapter<String>(
-					EventListfortheredays.this,
+					EventListforthreedays.this,
 					android.R.layout.simple_list_item_1, eventnameyesterday));
 		}
 	}
@@ -308,7 +318,7 @@ public class EventListfortheredays extends Activity {
 		@Override
 		protected String doInBackground(String... params) {
 			try {
-				System.out.println("start connect");
+				Log.d(null, "start connect");
 				StringBuilder sb = new StringBuilder();
 				HttpClient client = new DefaultHttpClient();
 				HttpParams httpParams = client.getParams();
@@ -339,40 +349,28 @@ public class EventListfortheredays extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			try {
-				//
-				// String body=getContent(url);
-				System.out.println("connect ends");
+				Log.d(null, "connect ends");
 				array = new JSONArray(result);
 				for (int i1 = 0; i1 < array.length(); i1++) {
 					JSONObject obj = array.getJSONObject(i1);
-					String name = obj.getString("name");
-					String description = obj.getString("description");
-					String day = obj.getString("day");
-					String month = obj.getString("month");
-					String year = obj.getString("year");
 					String startTime = obj.getString("startTime");
 					String endTime = obj.getString("endTime");
-					//eventnametomorrow.add(name + "\n" + year + "-" + month
-					//		+ "-" + day + "  From " + time(startTime) + " to "
-					//		+ time(endTime));
+					Event e = jsontoevent(obj);
+					eventlisttomorrow.add(e);
 					if (starthour == -1) {
-						eventnametomorrow.add(name + "\n" + year + "-" + month
-								+ "-" + day + "  From " + time(startTime)
-								+ " to " + time(endTime));
+						eventnametomorrow.add(formatEventDescriptor(e));
 					} else {
 						if (valueoftime(startTime) >= starthour * 60 + startmin
 								&& valueoftime(endTime) <= endhour * 60
 										+ endmin) {
-							eventnametomorrow.add(name + "\n" + year + "-" + month
-									+ "-" + day + "  From " + time(startTime)
-									+ " to " + time(endTime));
+							eventnametomorrow.add(formatEventDescriptor(e));
 						}
 					}
 				}
 			} catch (Exception e) {
 			}
 			listviewTomorrow.setAdapter(new ArrayAdapter<String>(
-					EventListfortheredays.this,
+					EventListforthreedays.this,
 					android.R.layout.simple_list_item_1, eventnametomorrow));
 		}
 	}
@@ -391,7 +389,7 @@ public class EventListfortheredays extends Activity {
 		endhour = i.getIntExtra("endhour", -1);
 		endmin = i.getIntExtra("endmin", -1);
 
-		// 将要分页显示的View装入数组中
+		// load the layout of three views
 		LayoutInflater mLi = LayoutInflater.from(this);
 		View view1 = mLi.inflate(R.layout.view1, null);
 		View view2 = mLi.inflate(R.layout.view2, null);
@@ -405,12 +403,14 @@ public class EventListfortheredays extends Activity {
 		String server = "http://0-1-dot-mcc-backend.appspot.com";
 		getToday();
 		String baseUrl = "/mcc/events/full-test-1/on/" + month + "/" + day
-		 + "/" + year;
-		//Log.d(null, baseUrl);
-		//String baseUrl = "/mcc/events/full-test-1/on/5/9/2014";
+				+ "/" + year;
+		Log.d(null, baseUrl);
+		// String baseUrl = "/mcc/events/full-test-1/on/5/9/2014";
 		String url = server + baseUrl;
+		Log.d(null, "log into"+url);
 		/*
-		 * need to set today's date here do not need to receive date from intent
+		 * need to set today's date here do not need to receive date from
+		 * Mainactivity
 		 */
 
 		Downloadjsontoday task = new Downloadjsontoday();
@@ -422,7 +422,7 @@ public class EventListfortheredays extends Activity {
 		Downloadjsontomorrow task2 = new Downloadjsontomorrow();
 		task2.execute(urltomorrow(server));
 
-		// 每个页面的Title数据
+		// views for viewpager
 		final ArrayList<View> views = new ArrayList<View>();
 		views.add(view1);
 		views.add(view2);
@@ -433,11 +433,7 @@ public class EventListfortheredays extends Activity {
 		titles.add("today");
 		titles.add("tomorrow");
 
-		// 测试用数组
-		// listviewToday.setAdapter(new ArrayAdapter<String>(this,
-		// android.R.layout.simple_expandable_list_item_1,getData()));
-
-		// 填充ViewPager的数据适配器
+		// load view to viewpager
 		PagerAdapter mPagerAdapter = new PagerAdapter() {
 
 			@Override
@@ -475,7 +471,7 @@ public class EventListfortheredays extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(EventListfortheredays.this,
+				Intent intent = new Intent(EventListforthreedays.this,
 						EventFilter.class);
 				startActivity(intent);
 			}
@@ -487,9 +483,78 @@ public class EventListfortheredays extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(EventListfortheredays.this,
+				Intent intent = new Intent(EventListforthreedays.this,
 						Eventconference.class);
 				startActivity(intent);
+			}
+		});
+
+		listviewToday.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Intent intent = new Intent(EventListforthreedays.this,
+						EventDetailActivity.class);
+				try {
+					Event t = eventlisttoday.get(arg2);
+					intent.putExtra("floorplanId", t.getFloorplanId());
+					intent.putExtra("eventId", t.getId());
+					intent.putExtra("endId", t.getFloorplanLocationId());
+					intent.putExtra("day", t.getDay());
+					intent.putExtra("month", t.getMonth());
+					intent.putExtra("year", t.getYear());
+					startActivity(intent);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		listviewTomorrow.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Intent intent = new Intent(EventListforthreedays.this,
+						EventDetailActivity.class);
+				try {
+					Event t = eventlisttomorrow.get(arg2);
+					intent.putExtra("floorplanId", t.getFloorplanId());
+					intent.putExtra("eventId", t.getId());
+					intent.putExtra("endId", t.getFloorplanLocationId());
+					intent.putExtra("day", t.getDay());
+					intent.putExtra("month", t.getMonth());
+					intent.putExtra("year", t.getYear());
+					startActivity(intent);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		listviewYestoday.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Intent intent = new Intent(EventListforthreedays.this,
+						EventDetailActivity.class);
+				try {
+					Event t = eventlistyesterday.get(arg2);
+					intent.putExtra("floorplanId", t.getFloorplanId());
+					intent.putExtra("eventId", t.getId());
+					intent.putExtra("endId", t.getFloorplanLocationId());
+					intent.putExtra("day", t.getDay());
+					intent.putExtra("month", t.getMonth());
+					intent.putExtra("year", t.getYear());
+					startActivity(intent);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 	}

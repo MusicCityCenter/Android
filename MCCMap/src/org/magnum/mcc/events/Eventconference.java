@@ -25,7 +25,7 @@ public class Eventconference extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(Eventconference.this, EventListfortheredays.class);
+				Intent i = new Intent(Eventconference.this, EventListforthreedays.class);
 				startActivity(i);
 			}
 		});

@@ -33,6 +33,11 @@ public class EventListforRoomActivity extends Activity {
 	private JSONArray array1;
 	private ListView listview;
 	private List<String> eventname = new ArrayList<String>();
+	
+	private String day;
+	private String month;
+	private String year;
+	private String floorplanLocationId;
 
 	private class Downloadjson extends AsyncTask<String, Integer, String> {
 
@@ -80,7 +85,7 @@ public class EventListforRoomActivity extends Activity {
 					String day = obj.getString("day");
 					String month = obj.getString("month");
 					String year = obj.getString("year");
-					if (obj.getString("floorplanLocationId").equals("101")) {
+					if (obj.getString("floorplanLocationId").equals(floorplanLocationId)) {
 						eventname.add(name + "\n" + year + "-" + month + "-"
 								+ day);
 						array1.put(obj);
@@ -100,11 +105,10 @@ public class EventListforRoomActivity extends Activity {
 		setContentView(R.layout.eventlist_forroom);
 
 		Intent i = getIntent();
-		final String day = i.getStringExtra("day");
-		final String month = i.getStringExtra("month");
-		final String year = i.getStringExtra("year");
-		final String floorplanLocationId = i
-				.getStringExtra("floorplanLocationId");
+		day = i.getStringExtra("day");
+		month = i.getStringExtra("month");
+		year = i.getStringExtra("year");
+		floorplanLocationId = i.getStringExtra("floorplanLocationId");
 
 		String server = "http://0-1-dot-mcc-backend.appspot.com";
 		String baseUrl = "/mcc/events/full-test-1/on/" + month + "/" + day

@@ -52,7 +52,7 @@ public class EventFilter extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(EventFilter.this, EventListfortheredays.class);
+				Intent i = new Intent(EventFilter.this, EventListforthreedays.class);
 				i.putExtra("starthour", starthour);
 				i.putExtra("startmin", startmin);
 				i.putExtra("endhour", endhour);
