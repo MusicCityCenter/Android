@@ -27,6 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class EventListforRoomActivity extends Activity {
 	private JSONArray array;
@@ -38,6 +39,8 @@ public class EventListforRoomActivity extends Activity {
 	private String month;
 	private String year;
 	private String floorplanLocationId;
+	
+	private TextView roomtitle;
 
 	private class Downloadjson extends AsyncTask<String, Integer, String> {
 
@@ -110,6 +113,9 @@ public class EventListforRoomActivity extends Activity {
 		year = i.getStringExtra("year");
 		floorplanLocationId = i.getStringExtra("floorplanLocationId");
 
+		roomtitle =  (TextView) this.findViewById(R.id.roomtitle);
+		roomtitle.setText("Room  "+ floorplanLocationId);
+		
 		String server = "http://0-1-dot-mcc-backend.appspot.com";
 		String baseUrl = "/mcc/events/full-test-1/on/" + month + "/" + day
 				+ "/" + year;

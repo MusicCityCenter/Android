@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +50,9 @@ public class EventsAndRoomforSearch extends Activity {
 	private List<Event> evenstlist=  new ArrayList<Event>();
 	
 	private Button back;
+	
+	//need to update the list according to database
+	private String[] roomID = {"101","102","103","104","105","106","107","108","109","110"};
 	
 	//to check whether string is all digit number
 	public boolean isDigit(String strNum) {  
@@ -179,18 +183,18 @@ public class EventsAndRoomforSearch extends Activity {
 		String url = server + baseUrl;
 		
 		
-		if(isDigit(search)){
+		if(Arrays.asList(roomID).contains(search)){
 			searchroom = search;
-			searchevent = "null";
+			searchevent = "no relevant events";
 			searchrooms.add(search);
-			eventsname.add("null");
+			eventsname.add("no relevant events");
 		}
 		else{
-			searchroom = "null";
+			searchroom = "no such room";
 			searchevent = search;
 			Downloadjsonbyevent task = new Downloadjsonbyevent();
 			task.execute(url);
-			searchrooms.add("null");
+			searchrooms.add("no such room");
 		}
 		
 		room.setAdapter(new ArrayAdapter<String>(EventsAndRoomforSearch.this,
@@ -205,7 +209,7 @@ public class EventsAndRoomforSearch extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				if(!searchroom.equals("null")){
+				if(!searchroom.equals("no such room")){
 					Intent i = new Intent(EventsAndRoomforSearch.this, EventListforRoomActivity.class);
 					i.putExtra("day", day);
 					i.putExtra("month", month);
@@ -223,7 +227,7 @@ public class EventsAndRoomforSearch extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				if(!searchevent.equals("null")){
+				if(!searchevent.equals("no relevant events")){
 					Intent intent = new Intent(EventsAndRoomforSearch.this,
 							EventDetailActivity.class);
 					Event t = evenstlist.get(arg2);

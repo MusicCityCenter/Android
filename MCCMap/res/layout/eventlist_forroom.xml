@@ -8,11 +8,11 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/roomtitle"
             android:layout_width="228dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Room 101"
+            android:text=""
             android:textSize="30sp" />
 
     </LinearLayout>

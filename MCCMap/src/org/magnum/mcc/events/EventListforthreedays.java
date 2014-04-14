@@ -68,6 +68,7 @@ public class EventListforthreedays extends Activity {
 	private List<Event> eventlistyesterday = new ArrayList<Event>();
 	private List<Event> eventlisttomorrow = new ArrayList<Event>();
 
+
 	private int starthour;
 	private int startmin;
 	private int endhour;
@@ -464,6 +465,7 @@ public class EventListforthreedays extends Activity {
 		};
 
 		mViewPager.setAdapter(mPagerAdapter);
+		mViewPager.setCurrentItem(1);
 
 		Button filter = (Button) this.findViewById(R.id.filter);
 		filter.setOnClickListener(new View.OnClickListener() {
