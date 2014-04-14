@@ -10,6 +10,7 @@ import org.magnum.mcc.events.EventController;
 import org.magnum.mcc.events.EventControllerImpl;
 import org.magnum.mcc.events.EventListforDateActivity;
 import org.magnum.mcc.events.EventListforthreedays;
+import org.magnum.mcc.events.EventsAndRoomforSearch;
 import org.magnum.mcc.events.EventsListener;
 import org.magnum.mcc.nav.MapRouteActivity;
 
@@ -65,6 +66,7 @@ public class MainActivity extends Activity {
 	
 	private Button searchButton;
 	private EditText searchBox;
+	private String searchcontent;
 	
 	//Listview related variable
 	private ListView headList;
@@ -117,13 +119,17 @@ public class MainActivity extends Activity {
 		});
         
         
+        
+        
         searchButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				/** Is this correct?! I changed it from "Map.class" to 
 				 * MapRouteActivity.class to get it to compile, but it might be wrong */
-				Intent intent= new Intent(MainActivity.this, MapRouteActivity.class);
+				searchcontent = searchBox.getText().toString();
+				Intent intent= new Intent(MainActivity.this, EventsAndRoomforSearch.class);
+				intent.putExtra("search", searchcontent);
 				startActivity(intent);
 			}
 		});        

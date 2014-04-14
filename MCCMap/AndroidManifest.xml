@@ -64,9 +64,7 @@
         <activity android:name="org.magnum.mcc.events.EventListforthreedays"></activity>     
 		<activity android:name="org.magnum.mcc.events.EventFilter"></activity>
 		<activity android:name="org.magnum.mcc.events.Eventconference"></activity>
-		
-
-        
+		<activity android:name="org.magnum.mcc.events.EventsAndRoomforSearch"></activity>    
         <!--  
  	    <meta-data
     		android:name="com.google.android.gms.version"

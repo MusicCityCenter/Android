@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/backbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back" />
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+   	 	android:layout_height="wrap_content"
+    	android:orientation="vertical">
+    
+        <TextView
+        android:id="@+id/titleroom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Room" />
+
+    <ListView
+        android:id="@+id/roomresult"
+        android:layout_width="match_parent"
+        android:layout_height="160dp" >
+    </ListView>
+        
+    </LinearLayout>
+    
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+   	 	android:layout_height="wrap_content"
+    	android:orientation="vertical">
+    
+        <TextView
+        android:id="@+id/titleevent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Events" />
+
+    <ListView
+        android:id="@+id/eventresult"
+        android:layout_width="match_parent"
+        android:layout_height="168dp" >
+    </ListView>
+        
+    </LinearLayout>
+    
+</LinearLayout>
