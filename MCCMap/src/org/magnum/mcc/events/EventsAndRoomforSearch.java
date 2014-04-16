@@ -40,25 +40,27 @@ public class EventsAndRoomforSearch extends Activity {
 	private String year;
 	private String month;
 	private String day;
-	
+
 	private String search;
 	private String searchroom;
 	private String searchevent;
-	
-	private List<String> searchrooms =  new ArrayList<String>();
-	private List<String> eventsname =  new ArrayList<String>();
-	private List<Event> evenstlist=  new ArrayList<Event>();
-	
+
+	private List<String> searchrooms = new ArrayList<String>();
+	private List<String> eventsname = new ArrayList<String>();
+	private List<Event> evenstlist = new ArrayList<Event>();
+
 	private Button back;
-	
-	//need to update the list according to database
-	private String[] roomID = {"101","102","103","104","105","106","107","108","109","110"};
-	
-	//to check whether string is all digit number
-	public boolean isDigit(String strNum) {  
-	    return strNum.matches("[0-9]{1,}");  
+
+	// need to update the list according to database
+	private String[] roomID = { "101", "102", "103", "104", "105", "106",
+			"107", "108", "109", "110", "207", "Davidson Ballroom",
+			"davidson ballroom" };
+
+	// to check whether string is all digit number
+	public boolean isDigit(String strNum) {
+		return strNum.matches("[0-9]{1,}");
 	}
-	
+
 	// set the date of today
 	private void getToday() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -76,28 +78,28 @@ public class EventsAndRoomforSearch extends Activity {
 			day = s.substring(6, 8);
 		}
 	}
-	
+
 	// change time to normal format
-		public String time(String t) {
-			int i = Integer.parseInt(t);
-			int hour = i / 60;
-			int min = i - 60 * hour;
-			String h = String.valueOf(hour);
-			String m = String.valueOf(min);
-			if (min == 0)
-				m = "00";
-			if (min < 10 && min > 0)
-				m = "0" + m;
-			String time = h + ":" + m;
-			return time;
-		}
-	
+	public String time(String t) {
+		int i = Integer.parseInt(t);
+		int hour = i / 60;
+		int min = i - 60 * hour;
+		String h = String.valueOf(hour);
+		String m = String.valueOf(min);
+		if (min == 0)
+			m = "00";
+		if (min < 10 && min > 0)
+			m = "0" + m;
+		String time = h + ":" + m;
+		return time;
+	}
+
 	private String formatEventDescriptor(Event e) {
 		return (e.getName() + "\n" + e.getYear() + "-" + e.getMonth() + "-"
 				+ e.getDay() + " From " + time(e.getStartTime()) + " to " + time(e
 					.getEndTime()));
 	}
-	
+
 	private Event jsontoevent(JSONObject obj) throws JSONException {
 		Event e = new Event();
 		e.setId(obj.getString("id"));
@@ -112,8 +114,9 @@ public class EventsAndRoomforSearch extends Activity {
 		e.setFloorplanLocationId(obj.getString("floorplanLocationId"));
 		return e;
 	}
-	
-	private class Downloadjsonbyevent extends AsyncTask<String, Integer, String> {
+
+	private class Downloadjsonbyevent extends
+			AsyncTask<String, Integer, String> {
 		@Override
 		protected String doInBackground(String... params) {
 			try {
@@ -152,65 +155,70 @@ public class EventsAndRoomforSearch extends Activity {
 				for (int i1 = 0; i1 < array.length(); i1++) {
 					JSONObject obj = array.getJSONObject(i1);
 					Event e = jsontoevent(obj);
-					if(e.getName().equals(searchevent)){	
-					evenstlist.add(e);
-					eventsname.add(formatEventDescriptor(e));
+					if (e.getName().toLowerCase()
+							.contains(searchevent.toLowerCase())
+							&& (!searchevent.equals(""))) {
+						evenstlist.add(e);
+						eventsname.add(formatEventDescriptor(e));
 					}
 				}
 			} catch (Exception e) {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.searchresult);
-		
+
 		room = (ListView) this.findViewById(R.id.roomresult);
 		events = (ListView) this.findViewById(R.id.eventresult);
-		
-		Log.d(null,"start!");
+
+		Log.d(null, "start!");
 		Intent i = getIntent();
 		search = i.getStringExtra("search");
-		
+
 		int port = 80;
 		String server = "http://0-1-dot-mcc-backend.appspot.com";
 		getToday();
 		String baseUrl = "/mcc/events/full-test-1/on/" + month + "/" + day
 				+ "/" + year;
 		String url = server + baseUrl;
-		
-		
-		if(Arrays.asList(roomID).contains(search)){
+
+		if (Arrays.asList(roomID).contains(search)) {
 			searchroom = search;
 			searchevent = "no relevant events";
 			searchrooms.add(search);
 			eventsname.add("no relevant events");
-		}
-		else{
+		} else {
 			searchroom = "no such room";
 			searchevent = search;
 			Downloadjsonbyevent task = new Downloadjsonbyevent();
 			task.execute(url);
 			searchrooms.add("no such room");
 		}
-		
+
+		if (eventsname.isEmpty()) {
+			searchevent = "no relevant events";
+			eventsname.add("no relevant events");
+		}
+
 		room.setAdapter(new ArrayAdapter<String>(EventsAndRoomforSearch.this,
 				android.R.layout.simple_list_item_1, searchrooms));
 		events.setAdapter(new ArrayAdapter<String>(EventsAndRoomforSearch.this,
 				android.R.layout.simple_list_item_1, eventsname));
-		
-		
-		room.setOnItemClickListener(new OnItemClickListener(){
+
+		room.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				if(!searchroom.equals("no such room")){
-					Intent i = new Intent(EventsAndRoomforSearch.this, EventListforRoomActivity.class);
+				if (!searchroom.equals("no such room")) {
+					Intent i = new Intent(EventsAndRoomforSearch.this,
+							EventListforRoomActivity.class);
 					i.putExtra("day", day);
 					i.putExtra("month", month);
 					i.putExtra("year", year);
@@ -218,16 +226,16 @@ public class EventsAndRoomforSearch extends Activity {
 					startActivity(i);
 				}
 			}
-			
+
 		});
-		
-		events.setOnItemClickListener(new OnItemClickListener(){
+
+		events.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				if(!searchevent.equals("no relevant events")){
+				if (!searchevent.equals("no relevant events")) {
 					Intent intent = new Intent(EventsAndRoomforSearch.this,
 							EventDetailActivity.class);
 					Event t = evenstlist.get(arg2);
@@ -240,23 +248,22 @@ public class EventsAndRoomforSearch extends Activity {
 					startActivity(intent);
 				}
 			}
-			
+
 		});
-		
+
 		back = (Button) this.findViewById(R.id.backbutton);
-		back.setOnClickListener(new View.OnClickListener(){
+		back.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(EventsAndRoomforSearch.this, MainActivity.class);
+				Intent i = new Intent(EventsAndRoomforSearch.this,
+						MainActivity.class);
 				startActivity(i);
 			}
-			
+
 		});
-		
+
 	}
 
-	
-	
 }

@@ -94,6 +94,9 @@ public class EventListforRoomActivity extends Activity {
 						array1.put(obj);
 					}
 				}
+				if(eventname.isEmpty()){
+					eventname.add("no event today");
+				}
 
 			} catch (Exception e) {
 			}
@@ -135,15 +138,17 @@ public class EventListforRoomActivity extends Activity {
 				Intent intent = new Intent(EventListforRoomActivity.this,
 						EventDetailActivity.class);
 				try {
-					intent.putExtra("floorplanId", array1.getJSONObject(arg2)
-							.getString("floorplanId"));
-					intent.putExtra("eventId", array1.getJSONObject(arg2)
-							.getString("id"));
-					intent.putExtra("endId", "null");
-					intent.putExtra("day", day);
-					intent.putExtra("month", month);
-					intent.putExtra("year", year);
-					startActivity(intent);
+					if(!eventname.get(0).equals("no event today")){
+						intent.putExtra("floorplanId", array1.getJSONObject(arg2)
+								.getString("floorplanId"));
+						intent.putExtra("eventId", array1.getJSONObject(arg2)
+								.getString("id"));
+						intent.putExtra("endId", "null");
+						intent.putExtra("day", day);
+						intent.putExtra("month", month);
+						intent.putExtra("year", year);
+						startActivity(intent);	
+					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
