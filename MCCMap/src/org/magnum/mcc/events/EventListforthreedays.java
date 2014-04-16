@@ -7,6 +7,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -244,6 +245,13 @@ public class EventListforthreedays extends Activity {
 				}
 			} catch (Exception e) {
 			}
+			
+			Collections.sort((eventlisttoday), new EventCompare());
+			eventnametoday.clear();
+			for(Event e:eventlisttoday){
+			   eventnametoday.add(formatEventDescriptor(e));
+			}
+			
 			listviewToday.setAdapter(new ArrayAdapter<String>(
 					EventListforthreedays.this,
 					android.R.layout.simple_list_item_1, eventnametoday));
@@ -307,6 +315,13 @@ public class EventListforthreedays extends Activity {
 				}
 			} catch (Exception e) {
 			}
+			
+			Collections.sort((eventlistyesterday), new EventCompare());
+			eventnameyesterday.clear();
+			for(Event e:eventlistyesterday){
+			   eventnameyesterday.add(formatEventDescriptor(e));
+			}
+			
 			listviewYestoday.setAdapter(new ArrayAdapter<String>(
 					EventListforthreedays.this,
 					android.R.layout.simple_list_item_1, eventnameyesterday));
@@ -370,6 +385,13 @@ public class EventListforthreedays extends Activity {
 				}
 			} catch (Exception e) {
 			}
+			
+			Collections.sort((eventlisttomorrow), new EventCompare());
+			eventnametomorrow.clear();
+			for(Event e:eventlisttomorrow){
+			   eventnametomorrow.add(formatEventDescriptor(e));
+			}
+			
 			listviewTomorrow.setAdapter(new ArrayAdapter<String>(
 					EventListforthreedays.this,
 					android.R.layout.simple_list_item_1, eventnametomorrow));
