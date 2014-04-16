@@ -7,5 +7,8 @@
     <string name="location_prompt">Where would you like to go?</string>
     <string name="floor_diagram">A diagram of the MCCs floors</string>
     <string name="map_description">A map of the MCCs floors</string>
+    <string name="map_tab_title">Map</string>
+    <string name="events_tab_title">Events</string>
+    <string name="more_tab_title">More</string>
 
 </resources>

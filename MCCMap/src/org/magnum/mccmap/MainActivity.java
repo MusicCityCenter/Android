@@ -8,14 +8,24 @@ import java.util.List;
 import org.magnum.mcc.events.Event;
 import org.magnum.mcc.events.EventController;
 import org.magnum.mcc.events.EventControllerImpl;
+import org.magnum.mcc.events.EventListforDateActivity;
+import org.magnum.mcc.events.EventListforthreedays;
+import org.magnum.mcc.events.EventsAdapter;
+import org.magnum.mcc.events.EventsAndRoomforSearch;
 import org.magnum.mcc.events.EventsListener;
 import org.magnum.mcc.nav.MapRouteActivity;
 
+
+
+
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +34,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+
 
 // Work Item 5
 /**
@@ -43,6 +55,8 @@ import android.widget.SimpleAdapter;
 
 public class MainActivity extends Activity {
 
+	public static final String TAG = MainActivity.class.getSimpleName();
+	
 	
 	// Fill me in with the current floorplanId...
 	// this should probably be somethign that is 
@@ -58,6 +72,7 @@ public class MainActivity extends Activity {
 	
 	private Button searchButton;
 	private EditText searchBox;
+	private String searchcontent;
 	
 	//Listview related variable
 	private ListView headList;
@@ -110,13 +125,17 @@ public class MainActivity extends Activity {
 		});
         
         
+        
+        
         searchButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				/** Is this correct?! I changed it from "Map.class" to 
 				 * MapRouteActivity.class to get it to compile, but it might be wrong */
-				Intent intent= new Intent(MainActivity.this, MapRouteActivity.class);
+				searchcontent = searchBox.getText().toString();
+				Intent intent= new Intent(MainActivity.this, EventsAndRoomforSearch.class);
+				intent.putExtra("search", searchcontent);
 				startActivity(intent);
 			}
 		});        
@@ -173,11 +192,19 @@ public class MainActivity extends Activity {
     	//server.
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_activity_action, menu);
+        
+//     // Get the SearchView and set the searchable configuration
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+//        // Assumes current activity is the searchable activity
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+
+        
         return true;
     }
     
@@ -192,16 +219,68 @@ public class MainActivity extends Activity {
             	i1.putExtra("endId", "S-1m-1");
 				startActivity(i1);
                 return true;
-            case R.id.action_event_calendar:
+            case R.id.action_eventlist:
+            	Intent i2= new Intent(MainActivity.this,EventListforthreedays.class);
+            	// Update to calculate the current day/month
+        		Calendar calendar = Calendar.getInstance();
+                String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                //In Calendar, January is represented by constant 0
+                String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                String year = String.valueOf(calendar.get(Calendar.YEAR));
                 
-            case R.id.action_restaurant:
-            	Intent i3= new Intent(MainActivity.this,RestaurantActivity.class);
-				startActivity(i3);
+                //i2.putExtra("day", "19");
+				//i2.putExtra("month", "3");
+				//i2.putExtra("year", year);
+				startActivity(i2);
+				return true;
+            case R.id.action_about:
+            	Intent i3= new Intent(MainActivity.this,AboutActivity.class);
+            	startActivity(i3);
+            	return true;
             case R.id.action_setting:
-                
+            	
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+    
+    private void listViewSetup() {
+    	eventList = (ListView) this.findViewById(R.id.listView_eventToday);
+    	eventList.setAdapter(new EventsAdapter(this, R.layout.row, events_));
+    	eventList.setTextFilterEnabled(true);
+    }
+    
+    private void searchBoxSetup() {
+    	searchBox = (EditText) findViewById(R.id.editText_searchBox);
+    	searchBox.addTextChangedListener(mEventListFilter);
+    }
+    
+    private EventsListener mEventListener = new EventsListener() {
+		@Override
+		public void setEvents(List<Event> events) {
+			Log.d(TAG,"EventsListener callback invoked, # of events: "+ events.size());
+			events_ = events;
+			listViewSetup();
+			searchBoxSetup();
+		}
+	};
+	
+	private TextWatcher mEventListFilter = new TextWatcher() {
+		
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {}
+		
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {}
+		
+		@Override
+		public void afterTextChanged(Editable s) {
+			Log.d(TAG, "Filtering search box : " + s.toString());
+			EventsAdapter evtAdapter = (EventsAdapter) eventList.getAdapter();
+			evtAdapter.getFilter().filter(s);
+			
+		}
+	};
 }

@@ -5,15 +5,15 @@
         android:showAsAction="always|withText"
         android:title="Map"/>
     <item
-        android:id="@+id/action_restaurant"
+        android:id="@+id/action_eventlist"
         android:orderInCategory="100"
         android:showAsAction="always|withText"
-        android:title="Restaurant"/>
+        android:title="Event"/>
     <item
-        android:id="@+id/action_event_calendar"
+        android:id="@+id/action_about"
         android:orderInCategory="100"
         android:showAsAction="always|withText"
-        android:title="EventCalendar"/>
+        android:title="About"/>
     <item
         android:id="@+id/action_setting"
         android:orderInCategory="100"

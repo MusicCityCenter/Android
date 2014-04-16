@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -49,6 +50,7 @@ public class MapRouteActivity extends Activity {
 		// Do stuff to setup the UI
 		progress_ = new ProgressDialog(this);
 		mapImageView_ = (MapImageView) findViewById(org.magnum.mccmap.R.id.mapImageView);
+		mapImageView_.setDrawingCacheEnabled(true);
 		
 		// Obtain the request path data
 		Intent i = getIntent();

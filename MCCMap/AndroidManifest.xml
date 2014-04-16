@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.magnum.mccmap"
+     
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -23,11 +24,26 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.Holo" >
+        <activity
+            android:name="org.magnum.mccmap.WelcomeScreenActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+ 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
         <activity android:uiOptions="splitActionBarWhenNarrow"
             android:name="org.magnum.mccmap.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light"
+   			      	
             android:label="@string/app_name" >
+            
+            <!-- android:theme="@style/Theme.AppCompat.Light"
+                 I delete this statement because I can not finish repair R.java with this one inside manifest  --> 
+            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,11 +53,18 @@
         
         <activity android:name="org.magnum.mccmap.WayfindingActivity"></activity>
         <activity android:name="org.magnum.mccmap.RestaurantActivity"></activity>
-        <activity android:name="org.magnum.mcc.events.EventViewActivity"></activity>
+        <activity android:name="org.magnum.mcc.events.EventDetailActivity"></activity>
         <activity android:name="org.magnum.mcc.events.EventViewActivity_room"></activity>
         <activity android:name="org.magnum.mcc.nav.MapRouteActivity"
-            	  android:theme="@android:style/Theme.Black.NoTitleBar" />      
-        
+            	  android:theme="@android:style/Theme.Black.NoTitleBar" />   
+        <activity android:name="org.magnum.mcc.events.tempList"></activity>
+        <activity android:name="org.magnum.mcc.events.EventListforDateActivity"></activity>
+        <activity android:name="org.magnum.mcc.events.EventListforRoomActivity"></activity>
+        <activity android:name="org.magnum.mccmap.AboutActivity"></activity>
+        <activity android:name="org.magnum.mcc.events.EventListforthreedays"></activity>     
+		<activity android:name="org.magnum.mcc.events.EventFilter"></activity>
+		<activity android:name="org.magnum.mcc.events.Eventconference"></activity>
+		<activity android:name="org.magnum.mcc.events.EventsAndRoomforSearch"></activity>    
         <!--  
  	    <meta-data
     		android:name="com.google.android.gms.version"
