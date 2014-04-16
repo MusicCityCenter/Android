@@ -90,8 +90,8 @@ public class EventControllerImpl implements EventController {
 	}
 	
 	/** The AsyncTask responsible for retrieving the set of events */
-	private class GetEventsAsyncTask extends AsyncTask<String, Integer, String> {		
-
+	private class GetEventsAsyncTask extends 
+		AsyncTask<String, Integer, String> {		
 		
 		@Override
 		protected String doInBackground(String... path) {			
@@ -195,9 +195,6 @@ public class EventControllerImpl implements EventController {
 			}
 		} catch (Exception e) {}
 	}
-
-	
-
 	// change time to normal format
 		public String time(String t) {
 			int i = Integer.parseInt(t);

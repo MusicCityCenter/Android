@@ -17,7 +17,6 @@ import org.magnum.mcc.nav.MapRouteActivity;
 
 
 
-
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
