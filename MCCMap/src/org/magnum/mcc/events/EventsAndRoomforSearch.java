@@ -162,6 +162,10 @@ public class EventsAndRoomforSearch extends Activity {
 						eventsname.add(formatEventDescriptor(e));
 					}
 				}
+				if (eventsname.isEmpty()) {
+					searchevent = "no relevant events";
+					eventsname.add("no relevant events");
+				}
 			} catch (Exception e) {
 			}
 		}
@@ -200,10 +204,7 @@ public class EventsAndRoomforSearch extends Activity {
 			searchrooms.add("no such room");
 		}
 
-		if (eventsname.isEmpty()) {
-			searchevent = "no relevant events";
-			eventsname.add("no relevant events");
-		}
+		
 
 		room.setAdapter(new ArrayAdapter<String>(EventsAndRoomforSearch.this,
 				android.R.layout.simple_list_item_1, searchrooms));
