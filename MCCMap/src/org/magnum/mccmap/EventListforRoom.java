@@ -80,6 +80,7 @@ public class EventListforRoom extends Fragment {
 
 		@Override
 		protected void onPostExecute(String result) {
+			eventname.clear();
 			try {
 				//
 				// String body=getContent(url);

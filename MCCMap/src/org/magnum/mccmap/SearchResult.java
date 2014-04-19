@@ -182,6 +182,10 @@ public class SearchResult extends Fragment {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		
+		searchrooms.clear();
+		eventsname.clear();
+		evenstlist.clear();
+		
 		room = (ListView) getView().findViewById(R.id.roomresult);
 		events = (ListView) getView().findViewById(R.id.eventresult);
 		

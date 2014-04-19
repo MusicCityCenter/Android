@@ -252,6 +252,7 @@ public class EventsAndRoomforSearch extends Activity {
 
 		});
 
+		/*
 		back = (Button) this.findViewById(R.id.backbutton);
 		back.setOnClickListener(new View.OnClickListener() {
 
@@ -264,7 +265,7 @@ public class EventsAndRoomforSearch extends Activity {
 			}
 
 		});
-
+		*/
 	}
 
 }
