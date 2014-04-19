@@ -11,7 +11,7 @@ public class PrimaryEventFragment extends EventFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		View v = inflater.inflate(R.layout.eventviewactivity, null);
+		View v = inflater.inflate(R.layout.eventlist, null);
 		
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}

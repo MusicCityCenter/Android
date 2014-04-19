@@ -1,48 +1,34 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".EventList" >
-    
-	<ListView
-	    android:id="@+id/listView_head"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_alignTop="@+id/listView_eventToday"
-	    android:background="@android:color/holo_green_dark" >
-    </ListView>
-    <ListView
-        android:id="@+id/listView_eventToday"
+    android:orientation="vertical" >
+
+ 
+    <!-- 
+    	<fragment
+        android:id="@+id/fragment1"
+        android:name="com.example.actionbar.ExampleFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" >
-    </ListView>
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="19dp" />
     
-    <EditText
-        android:id="@+id/editText_searchBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/listView_eventToday"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="21dp"
-        android:hint="please input room number or event name"
-        android:ems="10" />
+     -->
+  		
+  		<LinearLayout  
+        	android:id="@+id/fragment_place"  
+       	 	android:layout_width="match_parent"  
+        	android:layout_height="wrap_content"
+        	android:orientation="vertical" >  
+    	</LinearLayout>    
+    
 
-    <Button
-        android:id="@+id/button_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editText_searchBox"
-        android:layout_alignRight="@+id/listView_eventToday"
-        android:layout_weight="1"
-        android:text="search" />
+    
+    
 
-  
-
-</RelativeLayout>
+</LinearLayout>

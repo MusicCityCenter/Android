@@ -16,17 +16,21 @@ import org.magnum.mcc.events.EventsListener;
 import org.magnum.mcc.nav.MapRouteActivity;
 
 
-
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -52,8 +56,10 @@ import android.widget.SimpleAdapter;
  *
  */
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
+	/*
+	
 	public static final String TAG = MainActivity.class.getSimpleName();
 	
 	
@@ -130,8 +136,8 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				/** Is this correct?! I changed it from "Map.class" to 
-				 * MapRouteActivity.class to get it to compile, but it might be wrong */
+				// Is this correct?! I changed it from "Map.class" to 
+				// MapRouteActivity.class to get it to compile, but it might be wrong 
 				searchcontent = searchBox.getText().toString();
 				Intent intent= new Intent(MainActivity.this, EventsAndRoomforSearch.class);
 				intent.putExtra("search", searchcontent);
@@ -145,7 +151,7 @@ public class MainActivity extends Activity {
 		listContent = new ArrayList<HashMap<String, String>>();
 		listContent_title = new ArrayList<HashMap<String, String>>();
 
-		/**Display the headings */
+		//Display the headings 
 
 		map_head = new HashMap<String, String>();
 
@@ -163,7 +169,7 @@ public class MainActivity extends Activity {
 
 		}
 
-		/** Display the contents */
+		// Display the contents
 		Log.d("MCC","events in DisplayList:" + events_.size());
 		for (Event e : events_) {
 			map_list = new HashMap<String, String>();
@@ -282,4 +288,81 @@ public class MainActivity extends Activity {
 			
 		}
 	};
+	
+	*/
+	
+	ActionBar actionbar;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		ActionBar bar = getActionBar();
+		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		bar.setDisplayShowTitleEnabled(false);
+		ActionBar.Tab map = bar.newTab().setText("MAP");
+		ActionBar.Tab event = bar.newTab().setText("EVENT");
+		ActionBar.Tab about = bar.newTab().setText("ABOUT");
+		
+		Fragment fragment_map = new MapFragment();
+		Fragment fragment_event = new EventFragment();
+		Fragment fragment_about = new AboutFragment();
+		
+		map.setTabListener(new myTabListener(fragment_map));
+		event.setTabListener(new myTabListener(fragment_event));
+		about.setTabListener(new myTabListener(fragment_about));
+		bar.addTab(map);
+		bar.addTab(event);
+		bar.addTab(about);
+		
+	}
+	
+	
+	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater(); 
+        inflater.inflate(R.menu.main, menu); 
+        
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView(); 
+        if(searchView == null){ 
+            Log.e("SearchView","Fail to get Search View.");
+            return true;
+        }
+        searchView.setIconifiedByDefault(false);
+        
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+
+			@Override
+			public boolean onQueryTextChange(String s) {
+				// TODO Auto-generated method stub
+				Fragment newFragment = new SearchResult();
+				Bundle bundle = new Bundle();
+				bundle.putString("search", s);
+				newFragment.setArguments(bundle);
+				
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+				transaction.replace(R.id.fragment_place, newFragment);
+				transaction.addToBackStack(null);
+				transaction.commit();
+				
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextSubmit(String arg0) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+        	
+        });
+        
+		return true;
+	}
+	
+	
 }

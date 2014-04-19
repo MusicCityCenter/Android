@@ -496,7 +496,7 @@ public class EventListforthreedays extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(EventListforthreedays.this,
-						EventFilter.class);
+						EventFilterActivity.class);
 				startActivity(intent);
 			}
 		});
