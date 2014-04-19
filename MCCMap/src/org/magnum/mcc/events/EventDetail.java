@@ -21,6 +21,7 @@ import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -211,5 +212,7 @@ public class EventDetail extends Fragment {
 		// TODO Auto-generated method stub
 		return inflater.inflate(R.layout.eventview, container, false);
 	}
+	
+	
 
 }
