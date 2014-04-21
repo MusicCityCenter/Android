@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+    <ImageButton
+        android:layout_width="584px"
+        android:layout_height="145px"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:layout_margin="0dp"
+        android:src="@drawable/floor_4"
+        android:id="@+id/imageButton_4" />
+
+    <ImageButton
+        android:layout_width="584px"
+        android:layout_height="174px"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:layout_margin="0dp"
+        android:src="@drawable/floor_3"
+        android:id="@+id/imageButton_3" />
+
+    <ImageButton
+        android:layout_width="584px"
+        android:layout_height="164px"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:layout_margin="0dp"
+        android:src="@drawable/floor_2"
+        android:id="@+id/imageButton_2" />
+
+    <ImageButton
+        android:layout_width="584px"
+        android:layout_height="124px"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:layout_margin="0dp"
+        android:src="@drawable/floor_1m"
+        android:id="@+id/imageButton_1m" />
+
+    <ImageButton
+        android:layout_width="584px"
+        android:layout_height="139px"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:layout_margin="0dp"
+        android:src="@drawable/floor_1"
+        android:id="@+id/imageButton_1" />
+
+
+
+</LinearLayout>

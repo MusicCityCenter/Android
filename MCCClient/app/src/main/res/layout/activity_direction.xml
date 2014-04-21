@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView_current_direction"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+       
+    </ScrollView>
+
+    <ListView
+        android:id="@+id/listView_direction"
+        android:layout_width="match_parent"
+        android:layout_height="285dp" >
+    </ListView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Arrive Destination"
+        android:id="@+id/button_arrive"
+        android:layout_gravity="right" />
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="200dp"
+        android:id="@+id/imageView_path" />
+
+</LinearLayout>
