@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 import android.view.MotionEvent;
 import android.view.View;
@@ -51,10 +52,14 @@ public class MapImageView extends ImageView implements OnTouchListener {
     private int mBitmapWidth = -1;
     private int mBitmapHeight = -1;
     private boolean mDraggable = true;
-    
-    private static int PICTURE_WIDTH = 2275;
-    private static float PICTURE_WIDTH_CORRECTION = (float)(PICTURE_WIDTH*.087);
-    private static int PICTURE_HEIGHT = 3829;
+
+    private static float PICTURE_WIDTH = 2275/(float)2.1;
+    private static float PICTURE_HEIGHT = 3829/(float)2.4;
+
+  //  private static int PICTURE_WIDTH = 2275;
+    private static float PICTURE_WIDTH_CORRECTION = -100;
+    private static float PICTURE_HEIGHT_CORRECTION = -1750;
+ //   private static int PICTURE_HEIGHT = 3829;
     private Coord lastCoord_;
     
 
@@ -88,14 +93,20 @@ public class MapImageView extends ImageView implements OnTouchListener {
 		
 		float widthScale = (float) getWidth()/PICTURE_WIDTH;
 		float heightScale = (float) getHeight()/PICTURE_HEIGHT;
+        Log.d(TAG,"getWidth:"+ getWidth()+ " getHeight:"+ getHeight());
+
  		if(drawPath_ != null) {
  			lastCoord_ = drawPath_.get(0);
 			for(Coord c : drawPath_) {
 				canvas.drawLine(lastCoord_.getX()*widthScale+PICTURE_WIDTH_CORRECTION, 
-								lastCoord_.getY()*heightScale,
+								lastCoord_.getY()*heightScale+PICTURE_HEIGHT_CORRECTION,
 								c.getX()*widthScale+PICTURE_WIDTH_CORRECTION, 
-								c.getY()*heightScale, linePaint_);
-				lastCoord_ = c;
+								c.getY()*heightScale+PICTURE_HEIGHT_CORRECTION, linePaint_);
+                Log.d(TAG, "getX:" + lastCoord_.getX() + " getY:" + lastCoord_.getY());
+                Log.d(TAG,"widthScale:"+ widthScale+ " heightScale:"+ heightScale);
+                Log.d(TAG,"X:"+ (lastCoord_.getX()*widthScale+PICTURE_WIDTH_CORRECTION)+
+                          " Y:"+ (lastCoord_.getY()*heightScale+PICTURE_HEIGHT_CORRECTION));
+                lastCoord_ = c;
 			}
 		}
 	}

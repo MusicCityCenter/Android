@@ -11,12 +11,15 @@ import org.magnum.mcc.events.Event;
 import org.magnum.mcc.events.EventController;
 import org.magnum.mcc.events.EventControllerImpl;
 import org.magnum.mcc.events.EventsListener;
+import org.magnum.mcc.nav.MapRouteActivity;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +30,7 @@ import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
@@ -154,13 +158,10 @@ public class MainActivity extends FragmentActivity implements IBeaconConsumer {
 				builder.setTitle("Bluetooth not enabled");			
 				builder.setMessage("Please enable bluetooth in settings and restart this application.");
 				builder.setPositiveButton(android.R.string.ok, null);
-				builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-					@Override
-					public void onDismiss(DialogInterface dialog) {
-						finish();
-			            System.exit(0);					
-					}					
-				});
+				//If bluetooth not available, ues wifi to localization
+                currentLocationId = "101";
+                LocationTextView_.setText("Room 101");
+
 				builder.show();
 			}			
 		}
@@ -169,15 +170,15 @@ public class MainActivity extends FragmentActivity implements IBeaconConsumer {
 			builder.setTitle("Bluetooth LE not available");			
 			builder.setMessage("Sorry, this device does not support Bluetooth LE.");
 			builder.setPositiveButton(android.R.string.ok, null);
-			builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-				@Override
-				public void onDismiss(DialogInterface dialog) {
-					finish();
-		            System.exit(0);					
-				}
-				
-			});
+//			builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//
+//				@Override
+//				public void onDismiss(DialogInterface dialog) {
+//					finish();
+//		            System.exit(0);
+//				}
+//
+//			});
 			builder.show();
 			
 		}
@@ -192,12 +193,12 @@ public class MainActivity extends FragmentActivity implements IBeaconConsumer {
         //for test only
         final HashMap<Integer, String> beaconMapping = new HashMap<Integer, String>();
         beaconMapping.put(1673,"Room 101");
-        beaconMapping.put(1661,"Room 105");
+        beaconMapping.put(1661,"Room 104");
 
         //for test only
         final HashMap<String, String> IdMapping = new HashMap<String, String>();
-        IdMapping.put("Room 101","B-1-1");
-        IdMapping.put("Room 105","B-1-3");
+        IdMapping.put("Room 101","101");
+        IdMapping.put("Room 104","104");
 
         iBeaconManager.setRangeNotifier(new RangeNotifier() {
         @Override 
@@ -240,7 +241,7 @@ public class MainActivity extends FragmentActivity implements IBeaconConsumer {
                     logToDisplay(beaconMapping.get(index));
 
                     currentLocationId = IdMapping.get(beaconMapping.get(index));
-
+                    Log.d(TAG,"current location: "+ currentLocationId);
                     beaconSignal.clear();
                 }
 
@@ -258,6 +259,7 @@ public class MainActivity extends FragmentActivity implements IBeaconConsumer {
     	runOnUiThread(new Runnable() {
     	    public void run() {
     	    	LocationTextView_.setText(location);
+                LocationTextView_.setTextColor(Color.BLUE);
 
     	    }
     	});
@@ -321,44 +323,22 @@ public class MainActivity extends FragmentActivity implements IBeaconConsumer {
     }
 
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle presses on the action bar items
-//        switch (item.getItemId()) {
-//            case R.id.action_map:
-//            	Intent i1= new Intent(MainActivity.this, MapRouteActivity.class);
-//            	i1.putExtra("floorplanId", "full-test-1");
-//            	i1.putExtra("startId", "B-1-1");
-//            	i1.putExtra("endId", "B-1-3");
-//				startActivity(i1);
-//                return true;
-//            case R.id.action_eventlist:
-//            	Intent i2= new Intent(MainActivity.this,EventListforthreedays.class);
-//            	// Update to calculate the current day/month
-//        		Calendar calendar = Calendar.getInstance();
-//                String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-//                //In Calendar, January is represented by constant 0
-//                String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
-//                String year = String.valueOf(calendar.get(Calendar.YEAR));
-//
-//                //i2.putExtra("day", "19");
-//				//i2.putExtra("month", "3");
-//				//i2.putExtra("year", year);
-//                i2.putExtra("myLocationId",currentLocationId);
-//				startActivity(i2);
-//				return true;
-//            case R.id.action_about:
-//            	Intent i3= new Intent(MainActivity.this,AboutActivity.class);
-//            	startActivity(i3);
-//            	return true;
-//            case R.id.action_setting:
-//                Intent i4= new Intent(MainActivity.this,DirectionActivity.class);
-//            	startActivity(i4);
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+            	Intent i1= new Intent(MainActivity.this, MapRouteActivity.class);
+            	i1.putExtra("floorplanId", "full-test-1");
+            	i1.putExtra("startId", "104");
+            	i1.putExtra("endId", "108");
+				startActivity(i1);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 
     

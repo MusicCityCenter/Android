@@ -101,6 +101,10 @@ public class DirectionActivity extends Activity {
 					String command = directions.get(arg2);	
 					TTSobj.speak(command, TextToSpeech.QUEUE_FLUSH, null);
 
+                    for (int j = 0; j < arg0.getChildCount(); j++)
+                        arg0.getChildAt(j).setBackgroundColor(Color.TRANSPARENT);
+                    arg1.setBackgroundColor(Color.LTGRAY);
+
                     navController_.getPictureOnPath(floorplanId, path_.getEdges().get(arg2),new EdgeImageListener() {
 
                         @Override
@@ -195,9 +199,12 @@ public class DirectionActivity extends Activity {
             else
                 description += "Turn right ";
 
-            description += "at " + edges.get(i).getStart().getType() +" "+  edges.get(i).getStart().getId();
+           // description += "at " + edges.get(i).getStart().getType() +" "+  edges.get(i).getStart().getId();
+            directions.add("Go straight.");
+
             directions.add(description);
         }
+
         adapter.notifyDataSetChanged();
     }
 

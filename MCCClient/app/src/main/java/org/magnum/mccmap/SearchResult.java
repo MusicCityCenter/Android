@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +40,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchResult extends Fragment {
 
+    private final String TAG = this.getClass().getSimpleName();
+
 	private ListView room;
 	private ListView events;
 	private String year;
@@ -67,20 +70,12 @@ public class SearchResult extends Fragment {
 
 		// set the date of today
 		private void getToday() {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-			Date date = new Date();
-			String s = sdf.format(date);
-			year = s.substring(0, 4);
-			if (s.substring(4).equals("0")) {
-				month = s.substring(5);
-			} else {
-				month = s.substring(4, 6);
-			}
-			if (s.substring(6).equals("0")) {
-				day = s.substring(7);
-			} else {
-				day = s.substring(6, 8);
-			}
+            // Update to calculate the current day/month
+            Calendar calendar = Calendar.getInstance();
+            day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+            //In Calendar, January is represented by constant 0
+            month = String.valueOf(calendar.get(Calendar.MONTH));
+            year = String.valueOf(calendar.get(Calendar.YEAR));
 		}
 
 		// change time to normal format
@@ -202,6 +197,7 @@ public class SearchResult extends Fragment {
 		} else {
 			searchroom = "no such room";
 			searchevent = search;
+
 			Downloadjsonbyevent task = new Downloadjsonbyevent();
 			task.execute(url);
 			searchrooms.add("no such room");

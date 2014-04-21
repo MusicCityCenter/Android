@@ -109,7 +109,7 @@ public class MapRouteActivity extends Activity {
 						navData_.getFloorplan().getLocations().get(endId);
 				
 				if(start != null && end != null) {
-                    Log.d(TAG,"Got here?");
+
 					navController_.getShortestPath(floorplanId, start, end, 
 							new NavigationListener() {
 						
@@ -150,7 +150,8 @@ public class MapRouteActivity extends Activity {
         Log.d(TAG,"imageUrl:"+ imageUrl);
 
         UrlImageViewHelper.setUseBitmapScaling(true);
-        UrlImageViewHelper.setUrlDrawable(mapImageView_, imageUrl);
+     //   UrlImageViewHelper.setUrlDrawable(mapImageView_, imageUrl);
+        mapImageView_.setImageDrawable(getResources().getDrawable(R.drawable.level1));
 		
 		List<Coord> pathCoords = new ArrayList<Coord>();
 		for(FloorplanEdge edge : path_.getEdges()){
