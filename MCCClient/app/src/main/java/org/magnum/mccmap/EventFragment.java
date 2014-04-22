@@ -481,6 +481,7 @@ public class EventFragment extends Fragment{
 					String endTime = obj.getString("endTime");
 					Event e = jsontoevent(obj);
 
+
                     if (starthour == -1) {
                         eventlisttoday.add(e);
                         eventnametoday.add(formatEventDescriptor(e));
@@ -492,6 +493,20 @@ public class EventFragment extends Fragment{
                             eventnametoday.add(formatEventDescriptor(e));
                         }
                     }
+
+					
+					if (starthour == -1) {
+						eventlisttoday.add(e);
+						eventnametoday.add(formatEventDescriptor(e));
+					} else {
+						if (valueoftime(startTime) >= starthour * 60 + startmin
+								&& valueoftime(endTime) <= endhour * 60
+										+ endmin) {
+							eventlisttoday.add(e);
+							eventnametoday.add(formatEventDescriptor(e));
+						}
+					}
+
 				}
 			} catch (Exception e) {
 			}
@@ -554,6 +569,7 @@ public class EventFragment extends Fragment{
 					String startTime = obj.getString("startTime");
 					String endTime = obj.getString("endTime");
 					Event e = jsontoevent(obj);
+
                     if (starthour == -1) {
                         eventlistyesterday.add(e);
                         eventnameyesterday.add(formatEventDescriptor(e));
@@ -565,6 +581,20 @@ public class EventFragment extends Fragment{
                             eventnameyesterday.add(formatEventDescriptor(e));
                         }
                     }
+
+					
+					if (starthour == -1) {
+						eventlistyesterday.add(e);
+						eventnameyesterday.add(formatEventDescriptor(e));
+					} else {
+						if (valueoftime(startTime) >= starthour * 60 + startmin
+								&& valueoftime(endTime) <= endhour * 60
+										+ endmin) {
+							eventlistyesterday.add(e);
+							eventnameyesterday.add(formatEventDescriptor(e));
+						}
+					}
+
 				}
 			} catch (Exception e) {
 			}
@@ -627,6 +657,7 @@ public class EventFragment extends Fragment{
 					String startTime = obj.getString("startTime");
 					String endTime = obj.getString("endTime");
 					Event e = jsontoevent(obj);
+
                     if (starthour == -1) {
                         eventlisttomorrow.add(e);
                         eventnametomorrow.add(formatEventDescriptor(e));
@@ -638,6 +669,20 @@ public class EventFragment extends Fragment{
                             eventnametomorrow.add(formatEventDescriptor(e));
                         }
                     }
+
+					
+					if (starthour == -1) {
+						eventlisttomorrow.add(e);
+						eventnametomorrow.add(formatEventDescriptor(e));
+					} else {
+						if (valueoftime(startTime) >= starthour * 60 + startmin
+								&& valueoftime(endTime) <= endhour * 60
+										+ endmin) {
+							eventlisttomorrow.add(e);
+							eventnametomorrow.add(formatEventDescriptor(e));
+						}
+					}
+
 				}
 			} catch (Exception e) {
 			}
