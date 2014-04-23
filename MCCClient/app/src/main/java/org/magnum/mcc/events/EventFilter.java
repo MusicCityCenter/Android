@@ -57,14 +57,7 @@ public class EventFilter extends Fragment {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-				/*Intent i = new Intent(EventFilter.this, EventListforthreedays.class);
-				i.putExtra("starthour", starthour);
-				i.putExtra("startmin", startmin);
-				i.putExtra("endhour", endhour);
-				i.putExtra("endmin", endmin);
-				startActivity(i);
-				*/
+
                 Fragment newFragment = new EventFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("starthour", starthour);

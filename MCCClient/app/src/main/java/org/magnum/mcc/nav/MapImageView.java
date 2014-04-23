@@ -102,6 +102,7 @@ public class MapImageView extends ImageView implements OnTouchListener {
 								lastCoord_.getY()*heightScale+PICTURE_HEIGHT_CORRECTION,
 								c.getX()*widthScale+PICTURE_WIDTH_CORRECTION, 
 								c.getY()*heightScale+PICTURE_HEIGHT_CORRECTION, linePaint_);
+
                 Log.d(TAG, "getX:" + lastCoord_.getX() + " getY:" + lastCoord_.getY());
                 Log.d(TAG,"widthScale:"+ widthScale+ " heightScale:"+ heightScale);
                 Log.d(TAG,"X:"+ (lastCoord_.getX()*widthScale+PICTURE_WIDTH_CORRECTION)+

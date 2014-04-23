@@ -27,10 +27,7 @@ public class EventConf extends Fragment {
 		ok.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				/*Intent i = new Intent(Eventconference.this, EventListforthreedays.class);
-				startActivity(i);
-				*/
+
 				Fragment newFragment = new EventFragment();
 				FragmentTransaction transaction = getFragmentManager().beginTransaction();
 				transaction.replace(id.fragment_place, newFragment);

@@ -2,6 +2,12 @@ package org.magnum.mcc.events;
 
 import java.util.Comparator;
 
+/**
+ * Comparator to sort the event by time.
+ *
+ * @author yao
+ *
+ */
 
 public class EventCompare implements Comparator<Event> {
 	@Override

@@ -13,6 +13,8 @@ import java.util.List;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +25,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import org.magnum.mccmap.R;
+import org.magnum.mccmap.SearchResult;
+import org.magnum.mccmap.UtilityClass;
 
 public class MapRouteActivity extends Activity {
 	
@@ -65,11 +69,10 @@ public class MapRouteActivity extends Activity {
 		Log.d(TAG, "start: " + startId);
 		Log.d(TAG, "end: " + endId);
 
-		// This should probably be pulled from shared preferences
-		// but can be hardcoded to the MCC appengine server for now
-		String server = "http://0-1-dot-mcc-backend.appspot.com";
-		int port = 80;
-		String baseUrl = "/mcc";
+
+		String server = UtilityClass.server;
+		int port = UtilityClass.port;
+		String baseUrl = UtilityClass.baseUrl;
 		
 		serverBase_ = server;
 
@@ -78,6 +81,8 @@ public class MapRouteActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+
+
                 Intent i= new Intent(MapRouteActivity.this,DirectionActivity.class);
                 i.putExtra("floorplanId",floorplanId);
                 i.putExtra("startId", startId);
@@ -85,8 +90,7 @@ public class MapRouteActivity extends Activity {
                 startActivity(i);
             }
         });
-		// Update to use the NavController implementation created during
-		// this build cycle
+
 		navController_ = new MappingNavControllerImpl(server, port, 
 													  baseUrl, this);
 		
@@ -97,14 +101,10 @@ public class MapRouteActivity extends Activity {
 					FloorplanNavigationData fp) {
 				
 				navData_ = fp;
-				
-				// Change me to obtain the FloorplanLocation with the specified
-				// startId from the navData_.getFloorplan() object
+
 				FloorplanLocation start = 
 						navData_.getFloorplan().getLocations().get(startId);
-				
-				// Change me to obtain the FloorplanLocation with the specified
-				// endId from the navData_.getFloorplan() object
+
 				FloorplanLocation end = 
 						navData_.getFloorplan().getLocations().get(endId);
 				

@@ -28,15 +28,14 @@ public class EventControllerImpl implements EventController {
 	
 	private Context ctx_;
 	private List<Event> events_;
-	
-	//private WeakReference<EventViewActivity> activity_;
+
 	private String content;
 	
 	public EventControllerImpl(String host, int port, String urlBase) {
 			 host_ = host;
 			 port_ = port;
 			 urlBase_ = urlBase;
-			 //activity_ = new WeakReference<EventViewActivity>(activity);
+
 	}
 	
 	/** This method set the host information that is used to build the HTTP requests
@@ -61,7 +60,7 @@ public class EventControllerImpl implements EventController {
 	@Override
 	public void getEventsOnDay(String month, String day, String year, EventsListener l) {		
 		
-		targetUrl_ = host_ + "/mcc/events/full-test-1/on/" + month + "/" + day + "/"+ year;
+		targetUrl_ = host_ + urlBase_+ "/events/full-test-1/on/" + month + "/" + day + "/"+ year;
 		Log.d(TAG, targetUrl_);
         new GetEventsAsyncTask().execute(l);
 				
@@ -75,6 +74,8 @@ public class EventControllerImpl implements EventController {
 		@Override
 		protected Void doInBackground(EventsListener... el) {
 			try {
+                Log.d(TAG, "URL: "+ targetUrl_);
+
 				URL url = new URL(targetUrl_);
 				ObjectMapper mapper = new ObjectMapper();
 				events = mapper.readValue(url,
@@ -85,7 +86,6 @@ public class EventControllerImpl implements EventController {
 			}
 
 			if(events != null) {
-				Log.d(TAG,"events size:"+ events.size());
 				events_ = events;
 				el[0].setEvents(events_);
 			}

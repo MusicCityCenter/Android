@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -17,7 +18,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -39,45 +42,55 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.magnum.mccmap.MainActivity;
 import org.magnum.mccmap.R;
+import org.magnum.mccmap.UtilityClass;
 
+/**
+ * This fragment shows the turn-by-turn direction as well as the photos for navigation.
+ *
+ * @author yao
+ *
+ */
 public class DirectionActivity extends Activity {
 
     private final String TAG = this.getClass().getSimpleName();
-	private List<String> directions = new ArrayList<String>();
-    private List<FloorplanEdge> pathEdges = new ArrayList<FloorplanEdge>();
 
 	private TextView currentDirection;
 	private ListView directionView;
     private ImageView edgeImagView;
     private Button arriveBtn;
 
-    private ArrayAdapter adapter;
 	// Text to speech function
 	private TextToSpeech TTSobj;
 
     private Path path_;
     private Bitmap bmp_;
     private String targetUrl_;
+    private List<String> directions = new ArrayList<String>();
+    private ArrayAdapter adapter;
+
     private FloorplanNavigationData navData_;
     private NavController navController_;
     private Handler handler_ = new Handler();
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(org.magnum.mccmap.R.layout.activity_direction);
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(org.magnum.mccmap.R.layout.activity_direction);
 
         Intent i = getIntent();
         final String floorplanId = i.getStringExtra("floorplanId");
         final String startId = i.getStringExtra("startId");
         final String endId = i.getStringExtra("endId");
-        String server = "http://0-1-dot-mcc-backend.appspot.com";
-        int port = 80;
-        String baseUrl = "/mcc";
-        String NAV_PATH = "/path/";
+
+        String server = UtilityClass.server;
+        int port = UtilityClass.port;
+        String baseUrl = UtilityClass.baseUrl;
+        String NAV_PATH = UtilityClass.NAV_PATH;
         targetUrl_ = server + baseUrl + NAV_PATH + floorplanId + "/"
                 + startId + "/" + endId;
-        Log.d(TAG, "url: " + targetUrl_);
+        Log.d(TAG, "URL: " + targetUrl_);
 
 		currentDirection = (TextView) this.findViewById(org.magnum.mccmap.R.id.textView_current_direction);
 		currentDirection.setBackgroundColor(Color.BLUE);
@@ -104,6 +117,7 @@ public class DirectionActivity extends Activity {
                     for (int j = 0; j < arg0.getChildCount(); j++)
                         arg0.getChildAt(j).setBackgroundColor(Color.TRANSPARENT);
                     arg1.setBackgroundColor(Color.LTGRAY);
+                    currentDirection.setText(directions.get(arg2));
 
                     navController_.getPictureOnPath(floorplanId, path_.getEdges().get(arg2),new EdgeImageListener() {
 
@@ -115,7 +129,6 @@ public class DirectionActivity extends Activity {
                             Runnable r = new Runnable() {
                                 @Override
                                 public void run() {
-                                    currentDirection.setText(directions.get(arg2));
                                     edgeImagView.setImageBitmap(bmp_);
                                 }
                             };
@@ -146,18 +159,14 @@ public class DirectionActivity extends Activity {
 
                 navData_ = fp;
 
-                // Change me to obtain the FloorplanLocation with the specified
-                // startId from the navData_.getFloorplan() object
                 FloorplanLocation start =
                         navData_.getFloorplan().getLocations().get(startId);
 
-                // Change me to obtain the FloorplanLocation with the specified
-                // endId from the navData_.getFloorplan() object
+
                 FloorplanLocation end =
                         navData_.getFloorplan().getLocations().get(endId);
 
                 if(start != null && end != null) {
-                    Log.d(TAG,"Got here?");
                     navController_.getShortestPath(floorplanId, start, end,
                             new NavigationListener() {
 
@@ -178,7 +187,7 @@ public class DirectionActivity extends Activity {
                 }
             }
         });
-		// retriveCommand();
+
 		adapter = new ArrayAdapter<String>(DirectionActivity.this,
                 android.R.layout.simple_list_item_1, directions);
 		directionView.setAdapter(adapter);
@@ -187,19 +196,21 @@ public class DirectionActivity extends Activity {
 	}
 
     private void updatePathDisplay(){
+
         List<FloorplanEdge> edges = path_.getEdges();
+
         for(int i=1; i < edges.size(); i++){
-            FloorplanEdge e= edges.get(i);
+            FloorplanEdge e = edges.get(i);
             Log.d(TAG,"length:"+ e.getLength()+ " angle"+ e.getAngle()+ " start:"+ e.getStart().getId());
 
             String description ="";
             double difAngle = edges.get(i).getAngle()- edges.get(i-1).getAngle();
+
             if( difAngle<=180&& difAngle>0  ||  difAngle<-180)
                 description += "Turn left ";
             else
                 description += "Turn right ";
 
-           // description += "at " + edges.get(i).getStart().getType() +" "+  edges.get(i).getStart().getId();
             directions.add("Go straight.");
 
             directions.add(description);
@@ -207,17 +218,6 @@ public class DirectionActivity extends Activity {
 
         adapter.notifyDataSetChanged();
     }
-
-	//get string direction from server. For now, use dummy commands for test
-	private void retriveCommand(){
-//		directions.add("Turn left.");
-//		directions.add("Walk 20 meters and turn right.");
-//		directions.add("Arrive destination.");
-	}
-
-
-
-
 
 	@Override
 	public void onPause(){

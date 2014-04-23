@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <CheckBox
+        android:id="@+id/CheckBox05"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="conference 1" />
+
+    <CheckBox
+        android:id="@+id/CheckBox04"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="conference 2" />
+
+    <CheckBox
+        android:id="@+id/CheckBox03"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="conference 3" />
+
+    <CheckBox
+        android:id="@+id/CheckBox02"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="conference 4" />
+
+    <CheckBox
+        android:id="@+id/CheckBox01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="conference 5" />
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="conference 6" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="OK" />
+
+</LinearLayout>

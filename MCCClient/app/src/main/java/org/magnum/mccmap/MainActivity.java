@@ -62,24 +62,14 @@ import com.radiusnetworks.ibeacon.Region;
 public class MainActivity extends FragmentActivity implements IBeaconConsumer {
 
 	private final String TAG = this.getClass().getSimpleName();
+
 	private IBeaconManager iBeaconManager = IBeaconManager.getInstanceForApplication(this);
     // Determine location after multiple beacon search
     private int sampleCount;
     private int sampleNeed = 3;
     private HashMap<Integer,List<Integer>> beaconSignal = new HashMap<Integer, List<Integer>>();
 
-	// Fill me in with the current floorplanId...
-	// this should probably be somethign that is 
-	// a setting that comes from shared prefs
-	private String floorplanId;
     public static String currentLocationId;
-	
-	// Update me to 
-	private EventController eventController_;
-	
-	private List<Event> events_ = new ArrayList<Event>();
-	
-	private Handler handler_ = new Handler();
     private TextView LocationTextView_;
 
 
@@ -89,7 +79,6 @@ public class MainActivity extends FragmentActivity implements IBeaconConsumer {
         setContentView(R.layout.activity_main);
 
         LocationTextView_ = (TextView) this.findViewById(R.id.textView_currentLocation);
-
 
         verifyBluetooth();
         iBeaconManager.bind(this);
@@ -114,41 +103,7 @@ public class MainActivity extends FragmentActivity implements IBeaconConsumer {
         bar.addTab(event);
         bar.addTab(about);
 
-                         
-		// This should probably be pulled from shared preferences
-		// but can be hardcoded to the MCC appengine server for now
-		String server = "http://0-1-dot-mcc-backend.appspot.com";
-		int port = 80;
-		String baseUrl = "/mcc";
-		eventController_ = new EventControllerImpl(server,port,baseUrl);			
-        
-        // Update to calculate the current day/month
-		Calendar calendar = Calendar.getInstance();
-        String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-        //In Calendar, January is represented by constant 0
-        String month = String.valueOf(calendar.get(Calendar.MONTH));
-        String year = String.valueOf(calendar.get(Calendar.YEAR));
-
-
-
-        eventController_.getEventsOnDay(month, day, year, new EventsListener() {
-			
-			@Override
-			public void setEvents(List<Event> events) {
-				Log.d("MCC","eventsize:"+ events.size());
-				events_ = events;
-				handler_.post(new Runnable() {
-					
-					@Override
-					public void run() {
-						
-						
-					}
-				});
-			}
-		});
-
-    }   
+    }
 
     private void verifyBluetooth() {
 
@@ -255,6 +210,7 @@ public class MainActivity extends FragmentActivity implements IBeaconConsumer {
             iBeaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
         } catch (RemoteException e) {   }
     }
+
     private void logToDisplay(final String location) {
     	runOnUiThread(new Runnable() {
     	    public void run() {
